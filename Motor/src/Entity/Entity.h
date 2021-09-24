@@ -20,6 +20,7 @@ namespace Coco {
 			glm::vec3 localPosition;
 			glm::vec3 localRotation;
 			glm::vec3 localScale;
+			glm::quat localRotationQuaternion;
 
 			glm::vec3 forward;
 			glm::vec3 up;

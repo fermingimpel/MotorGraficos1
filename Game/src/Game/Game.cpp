@@ -84,14 +84,19 @@ namespace Coco {
 		_model1->SetMeshPos(0.2, 0, 0, 9);
 		//_model1->SetPos(0, -0.5, 5);
 		//_model1->SetRotY(180);
-		_model1->SetScale(0.15, 0.15, 0.15);
+		
+		_model1->SetRotY(30);
+
+
 		//_model1->SetRotZ(-180);
 		//
 		//_model1->SetMeshPos(1, -0.5, 5, 5);
 		//_model1->SetMeshPos(-1, -0.5, 5, 6);
 
 		for (int i = 0; i < _model1->GetMeshes().size(); i++) {
-			std::cout << "name: " <<_model1->GetMeshes()[i]->GetName().c_str() << " pos x: " << _model1->GetMeshes()[i]->transform.position.x << " y: " << _model1->GetMeshes()[i]->transform.position.y << " z: " << _model1->GetMeshes()[i]->transform.position.z << std::endl;
+			std::cout << "name: " << _model1->GetMeshes()[i]->GetName().c_str() <<	" world rot x: " << _model1->GetMeshes()[i]->transform.rotationQuaternion.x << " y: " << _model1->GetMeshes()[i]->transform.rotationQuaternion.y << " z: " << _model1->GetMeshes()[i]->transform.rotationQuaternion.z <<" w: " << _model1->GetMeshes()[i]->transform.rotationQuaternion.w << std::endl;
+			//std::cout << "name: " <<_model1->GetMeshes()[i]->GetName().c_str() <<	" local rot x: " << _model1->GetMeshes()[i]->transform.localRotation.x << " y: " << _model1->GetMeshes()[i]->transform.localRotation.y << " z: " << _model1->GetMeshes()[i]->transform.localRotation.z <<	" w: " << _model1->GetMeshes()[i]->transform.rotation.w << std::endl;
+			std::cout << std::endl;
 		}
 
 		_camera->SetEntity(_model1);
