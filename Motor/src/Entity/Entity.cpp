@@ -21,10 +21,18 @@ namespace Coco {
 		matrix.rotationZ = glm::mat4(1.0f);
 		matrix.scale = glm::mat4(1.0f);
 
+		transform.position = { 0,0,0 };
+		transform.scale = { 1,1,1 };
+		transform.rotation = { 0,0,0 };
+
+		transform.localPosition = transform.position;
+		transform.localScale = transform.scale;
+		transform.localRotation = transform.rotation;
+
 		transform.rotationQuaternion = glm::quat(0, 0, 0, 1);
-		SetPos(0.0f, 0.0f, 0.0f);
-		SetRotations(0, 0, 0);
-		SetScale(1.0f, 1.0f, 1.0f);
+		
+		UpdateMatrixData();
+		UpdateTransformsData();
 	}
 	Entity::~Entity() {
 

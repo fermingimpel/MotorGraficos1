@@ -60,7 +60,7 @@ namespace Coco {
 	}
 
 	void Game::Start() {
-		StartEngine(1366, 768, "Coco");
+		StartEngine(1366,768, "Coco");
 		srand(time(NULL));
 
 		_camera = new Camera(GetRenderer());
@@ -79,16 +79,20 @@ namespace Coco {
 
 		_model1 = new Model(GetRenderer());
 		_model1->LoadModel("res/models/body.fbx", "null");
-		_model1->SetPos(0, -0.5, 5);
-		_model1->SetScale(0.5, 0.5, 0.5);
-		_model1->SetRotX(-90);
+		_model1->SetPos(0, 0, 2);
+		_model1->SetMeshPos(-0.66f, 0, 0, 8);
+		_model1->SetMeshPos(0.2, 0, 0, 9);
+		//_model1->SetPos(0, -0.5, 5);
+		//_model1->SetRotY(180);
+		_model1->SetScale(0.15, 0.15, 0.15);
+		//_model1->SetRotZ(-180);
+		//
+		//_model1->SetMeshPos(1, -0.5, 5, 5);
+		//_model1->SetMeshPos(-1, -0.5, 5, 6);
 
-		_model1->SetMeshPos(1, -0.5, 5, 5);
-		_model1->SetMeshPos(-1, -0.5, 5, 6);
-
-		//for (int i = 0; i < _model1->GetMeshes().size(); i++) {
-		//	std::cout << "name: " <<_model1->GetMeshes()[i]->GetName().c_str() << " scale x: " << _model1->GetMeshes()[i]->transform.scale.x << " y: " << _model1->GetMeshes()[i]->transform.scale.y << " z: " << _model1->GetMeshes()[i]->transform.scale.z << std::endl;
-		//}
+		for (int i = 0; i < _model1->GetMeshes().size(); i++) {
+			std::cout << "name: " <<_model1->GetMeshes()[i]->GetName().c_str() << " pos x: " << _model1->GetMeshes()[i]->transform.position.x << " y: " << _model1->GetMeshes()[i]->transform.position.y << " z: " << _model1->GetMeshes()[i]->transform.position.z << std::endl;
+		}
 
 		_camera->SetEntity(_model1);
 
@@ -234,12 +238,14 @@ namespace Coco {
 
 	bool inFirstPersonMode = false;
 
+	float posXModel = 0.0f;
+	float posXFootModel = 0.0f;
+
 	void Game::Update(float deltaTime) {
 		GetWindow()->ClearWindow(0.15f, 0.15f, 0.15f, 1.0f);
 
 		rotY += deltaTime * 50.0f;
 		
-		_model1->SetMeshRotZ(rotY, 6);
 		//_model2->SetRotY(rotY);
 		//_model3->SetRotY(rotY);
 		//_model4->SetRotations(rotY, rotY, rotY);
@@ -349,6 +355,19 @@ namespace Coco {
 			_camera->SetPos(0.0f, 0.0f, 0.0f);
 			_camera->SetRotations(0, 0, 0);
 		}
+
+		if (Input::GetKey(Keycode::J))
+			posXModel += deltaTime;
+		else if (Input::GetKey(Keycode::L))
+			posXModel -= deltaTime;
+
+		if (Input::GetKey(Keycode::ALPHA4))
+			posXFootModel += deltaTime;
+		else if (Input::GetKey(Keycode::ALPHA5))
+			posXFootModel -= deltaTime;
+
+		_model1->SetMeshPos(posXFootModel, 0, 0, 9);
+		_model1->SetMeshPos(posXModel, 0, 0, 8);
 
 		_camera->LookAt(_camera->transform.position + _camera->transform.forward);
 

@@ -80,6 +80,7 @@ namespace Coco {
 
 			for (int i = 0; i < _meshesParent.size(); i++) 
 				if (m->GetNode()->mParent == _meshesParent[i]->GetNode()) {
+					m->SetParent(_meshesParent[i]);
 					_meshesParent[i]->AddMeshSon(m);
 					break;
 				}

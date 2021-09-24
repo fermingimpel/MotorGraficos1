@@ -81,11 +81,17 @@ namespace Coco {
 	}
 
 	void Mesh::SetPos(float x, float y, float z) {
-		transform.position = { x, y, z };
+		transform.localPosition = { x, y, z };
+
+		if (_meshParent)
+			transform.position = _meshParent->transform.position + transform.localPosition;
+		else 				
+			transform.position = transform.localPosition;
+		
 		matrix.translate = glm::translate(glm::mat4(1.0f), transform.position);
 
 		for (int i = 0; i < _meshSons.size(); i++)
-			_meshSons[i]->SetPos(x,y,z);
+			_meshSons[i]->UpdateSonsPos();
 
 		UpdateMatrixData();
 	}
@@ -93,43 +99,67 @@ namespace Coco {
 		SetPos(pos.x, pos.y, pos.z);
 	}
 	void Mesh::SetRotX(float x) {
-		transform.rotation.x = x;
-		matrix.rotationX = glm::rotate(glm::mat4(1.0f), glm::radians(x), glm::vec3(1.0f, 0.0f, 0.0f));
+		transform.localRotation.x = x;
+
+		if (_meshParent)
+			transform.rotation.x = _meshParent->transform.rotation.x + transform.rotation.x;
+		else
+			transform.rotation.x = transform.localRotation.x;
+
+
+		matrix.rotationX = glm::rotate(glm::mat4(1.0f), glm::radians(transform.rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
 
 		for (int i = 0; i < _meshSons.size(); i++)
-			_meshSons[i]->SetRotX(x);
+			_meshSons[i]->UpdateSonsRotX();
 
 		UpdateMatrixData();
 		UpdateTransformsData();
 	}
 	void Mesh::SetRotY(float y) {
-		transform.rotation.y = y;
-		matrix.rotationY = glm::rotate(glm::mat4(1.0f), glm::radians(y), glm::vec3(0.0f, 1.0f, 0.0f));
+		transform.localRotation.y = y;
+
+		if (_meshParent)
+			transform.rotation.y = _meshParent->transform.rotation.y + transform.rotation.y;
+		else
+			transform.rotation.y = transform.localRotation.y;
+
+		matrix.rotationY = glm::rotate(glm::mat4(1.0f), glm::radians(transform.rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
 
 		for (int i = 0; i < _meshSons.size(); i++)
-			_meshSons[i]->SetRotY(y);
+			_meshSons[i]->UpdateSonsRotY();
 
 		UpdateMatrixData();
 		UpdateTransformsData();
 	}
 	void Mesh::SetRotZ(float z) {
-		transform.rotation.z = z;
-		matrix.rotationZ = glm::rotate(glm::mat4(1.0f), glm::radians(z), glm::vec3(0.0f, 0.0f, 1.0f));
+		transform.localRotation.z = z;
+
+		if (_meshParent)
+			transform.rotation.z = _meshParent->transform.rotation.z + transform.rotation.z;
+		else
+			transform.rotation.z = transform.localRotation.z;
+
+		matrix.rotationZ = glm::rotate(glm::mat4(1.0f), glm::radians(transform.rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
 
 		for (int i = 0; i < _meshSons.size(); i++)
-			_meshSons[i]->SetRotZ(z);
+			_meshSons[i]->UpdateSonsRotZ();
 
 		UpdateMatrixData();
 		UpdateTransformsData();
 	}
 	void Mesh::SetRotations(float x, float y, float z) {
-		transform.rotation = glm::vec3(x, y, z);
-		matrix.rotationX = glm::rotate(glm::mat4(1.0f), glm::radians(x), glm::vec3(1.0f, 0.0f, 0.0f));
-		matrix.rotationY = glm::rotate(glm::mat4(1.0f), glm::radians(y), glm::vec3(0.0f, 1.0f, 0.0f));
-		matrix.rotationZ = glm::rotate(glm::mat4(1.0f), glm::radians(z), glm::vec3(0.0f, 0.0f, 1.0f));
+		transform.localRotation = glm::vec3(x, y, z);
+		if (_meshParent)
+			transform.rotation = _meshParent->transform.rotation + transform.localRotation;
+		else
+			transform.rotation = transform.localRotation;
+
+		matrix.rotationX = glm::rotate(glm::mat4(1.0f), glm::radians(transform.rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+		matrix.rotationY = glm::rotate(glm::mat4(1.0f), glm::radians(transform.rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+		matrix.rotationZ = glm::rotate(glm::mat4(1.0f), glm::radians(transform.rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
 
 		for (int i = 0; i < _meshSons.size(); i++)
-			_meshSons[i]->SetRotations(x, y, z);
+			_meshSons[i]->UpdateSonsRotations();
 
 		UpdateMatrixData();
 		UpdateTransformsData();
@@ -138,45 +168,90 @@ namespace Coco {
 		SetRotations(rotation.x, rotation.y, rotation.z);
 	}
 	void Mesh::SetScale(float x, float y, float z) {
-		transform.scale = { x, y, z };
+		transform.localScale = { x, y, z };
+
+		if (_meshParent)
+			transform.scale = _meshParent->transform.scale * transform.localScale;
+		else
+			transform.scale = transform.localScale;
+
 		matrix.scale = glm::scale(glm::mat4(1.0f), transform.scale);
 
 		for (int i = 0; i < _meshSons.size(); i++)
-			_meshSons[i]->SetScale(x, y, z);
+			_meshSons[i]->UpdateSonsScale();
 
 		UpdateMatrixData();
 	}
 
-	void Mesh::SetLocalPos(float x, float y, float z) {
+	void Mesh::UpdateSonsPos() {
+
+		transform.position = _meshParent->transform.position + transform.localPosition;
+
+		matrix.translate = glm::translate(glm::mat4(1.0f), transform.position);
+		for (int i = 0; i < _meshSons.size(); i++)
+			_meshSons[i]->UpdateSonsPos();
+
+		UpdateMatrixData();
 
 	}
 
-	void Mesh::SetLocalPos(glm::vec3 pos) {
+	void Mesh::UpdateSonsRotX() {
+
+		transform.rotation.x = _meshParent->transform.rotation.x + transform.localRotation.x;
+		matrix.rotationX = glm::rotate(glm::mat4(1.0f), glm::radians(transform.rotation.x), glm::vec3(0.0f, 0.0f, 1.0f));
+
+		for (int i = 0; i < _meshSons.size(); i++)
+			_meshSons[i]->UpdateSonsRotX();
+
+		UpdateMatrixData();
+		UpdateTransformsData();
 
 	}
 
-	void Mesh::SetLocalRotX(float x) {
+	void Mesh::UpdateSonsRotY() {
+		transform.rotation.y = _meshParent->transform.rotation.y + transform.localRotation.y;
+		matrix.rotationY = glm::rotate(glm::mat4(1.0f), glm::radians(transform.rotation.y), glm::vec3(0.0f, 0.0f, 1.0f));
 
+		for (int i = 0; i < _meshSons.size(); i++)
+			_meshSons[i]->UpdateSonsRotY();
+
+		UpdateMatrixData();
+		UpdateTransformsData();
 	}
 
-	void Mesh::SetLocalRotY(float y) {
+	void Mesh::UpdateSonsRotZ() {
+		transform.rotation.z = _meshParent->transform.rotation.z + transform.localRotation.z;
+		matrix.rotationZ = glm::rotate(glm::mat4(1.0f), glm::radians(transform.rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
 
+		for (int i = 0; i < _meshSons.size(); i++)
+			_meshSons[i]->UpdateSonsRotZ();
+
+		UpdateMatrixData();
+		UpdateTransformsData();
 	}
 
-	void Mesh::SetLocalRotZ(float z) {
+	void Mesh::UpdateSonsRotations() {
+		transform.rotation = _meshParent->transform.rotation + transform.localRotation;
 
+		matrix.rotationX = glm::rotate(glm::mat4(1.0f), glm::radians(transform.rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+		matrix.rotationY = glm::rotate(glm::mat4(1.0f), glm::radians(transform.rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+		matrix.rotationZ = glm::rotate(glm::mat4(1.0f), glm::radians(transform.rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+
+		for (int i = 0; i < _meshSons.size(); i++)
+			_meshSons[i]->UpdateSonsRotations();
+
+		UpdateMatrixData();
+		UpdateTransformsData();
 	}
 
-	void Mesh::SetLocalRotations(float x, float y, float z) {
+	void Mesh::UpdateSonsScale() {
+		transform.scale = _meshParent->transform.scale * transform.localScale;
+		matrix.scale = glm::scale(glm::mat4(1.0f), transform.scale);
 
-	}
+		for (int i = 0; i < _meshSons.size(); i++)
+			_meshSons[i]->UpdateSonsScale();
 
-	void Mesh::SetLocalRotations(glm::vec3 rotation) {
-
-	}
-
-	void Mesh::SetLocalScale(float x, float y, float z) {
-
+		UpdateMatrixData();
 	}
 
 	void Mesh::SetName(std::string value) {
@@ -194,6 +269,11 @@ namespace Coco {
 	void Mesh::SetIsParent(bool value) {
 		_isParent = value;
 	}
+
+	void Mesh::SetParent(Mesh* parent) {
+		_meshParent = parent;
+	}
+
 	bool Mesh::GetIsParent() {
 		return _isParent;
 	}

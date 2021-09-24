@@ -29,6 +29,7 @@ namespace Coco {
 		void SetNode(aiNode* node);
 		void SetName(std::string value);
 		void SetIsParent(bool value);
+		void SetParent(Mesh* parent);
 		bool GetIsParent();
 		aiNode* GetNode();
 		std::string GetName();
@@ -43,14 +44,12 @@ namespace Coco {
 		void SetRotations(glm::vec3 rotation)			override;
 		void SetScale(float x, float y, float z)		override;
 
-		void SetLocalPos(float x, float y, float z);
-		void SetLocalPos(glm::vec3 pos);
-		void SetLocalRotX(float x);
-		void SetLocalRotY(float y);
-		void SetLocalRotZ(float z);
-		void SetLocalRotations(float x, float y, float z);
-		void SetLocalRotations(glm::vec3 rotation);
-		void SetLocalScale(float x, float y, float z);
+		void UpdateSonsPos();
+		void UpdateSonsRotX();
+		void UpdateSonsRotY();
+		void UpdateSonsRotZ();
+		void UpdateSonsRotations();
+		void UpdateSonsScale();
 	};
 
 }
