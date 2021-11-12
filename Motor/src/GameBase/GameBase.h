@@ -2,8 +2,10 @@
 #define GAMEBASE_H
 
 #include "../src/Exports/Exports.h"
+
 #include "../src/Window/Window.h"
 #include "../src/Renderer/Renderer.h"
+
 #include "../src/Shape/Shape.h"
 #include "../src/Sprite/Sprite.h"
 #include "../src/Input/Input.h"
