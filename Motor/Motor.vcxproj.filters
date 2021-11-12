@@ -90,9 +90,6 @@
     <ClCompile Include="src\Model\ModelTexture.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="src\BSPlane\BSPlane.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Animation\Animation.h">
@@ -171,9 +168,6 @@
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="src\Model\ModelTexture.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="src\BSPlane\BSPlane.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>
