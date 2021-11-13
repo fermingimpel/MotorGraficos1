@@ -12,6 +12,7 @@
 #include "../src/Light/LightManager.h"
 #include "../Model/Model.h"
 #include "../Timer/Timer.h"
+#include "../BSPlane/BSPlane.h"
 
 struct GLFWmonitor;
 
