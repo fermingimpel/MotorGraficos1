@@ -87,9 +87,9 @@ namespace Coco {
 		_model2->SetMeshPos(0.05, -0.175, 0, 10);
 		_model2->SetMeshPos(0, -0.1, -0.05, 11);
 
-		for (int i = 0; i < _model2->GetMeshes().size(); i++) {
-			std::cout << "mesh name:" << _model2->GetMeshes()[i]->GetName() << std::endl;
-		}
+		//for (int i = 0; i < _model2->GetMeshes().size(); i++) {
+		//	std::cout << "mesh name:" << _model2->GetMeshes()[i]->GetName() << std::endl;
+		//}
 
 		//_model2->SetPos(0, 0, 2);
 
@@ -98,13 +98,8 @@ namespace Coco {
 		_plane->GetModel()->SetScale(0.1, 0.1, 0.1);
 		_plane->GetModel()->SetPos(-1, 0, 2);
 		_plane->GetModel()->SetRotations(0, 90, 0);
-		std::cout << "plane forward: x: " << _plane->GetModel()->transform.forward.x << " y: " << _plane->GetModel()->transform.forward.y << " z: " << _plane->GetModel()->transform.forward.z << std::endl;
+		//std::cout << "plane forward: x: " << _plane->GetModel()->transform.forward.x << " y: " << _plane->GetModel()->transform.forward.y << " z: " << _plane->GetModel()->transform.forward.z << std::endl;
 
-		//for (int i = 0; i < _plane->GetModel()->GetMeshes().size(); i++) {
-		//	std::cout << "name: " << _plane->GetModel()->GetMeshes()[i]->GetName() << std::endl;
-		//}
-
-		//_camera->SetEntity(_model1);
 	}
 	void Game::Play() {
 		UpdateEngine();
@@ -128,9 +123,6 @@ namespace Coco {
 		GetWindow()->ClearWindow(0.15f, 0.15f, 0.15f, 1.0f);
 
 		rotY += deltaTime * 50.0f;
-
-		//_model2->SetRotations(-90, rotY, 0);
-		_model2->SetRotations(-90, 0, rotY);
 
 		if (Input::GetKey(Keycode::W))
 			_camera->SetPos(_camera->transform.position + (glm::vec3(0, 1, 0) * speed * deltaTime));
@@ -163,12 +155,17 @@ namespace Coco {
 			posXModel -= deltaTime;
 
 		_model2->SetPos(posXModel, 0, 2);
+		for (int i = 0; i < _model2->GetMeshes().size(); i++) {
+			if (_plane->IsFacingObjet(_model2->GetMeshes()[i]))
+				_model2->GetMeshes()[i]->SetCanDrawMesh(true);
+			else 
+				_model2->GetMeshes()[i]->SetCanDrawMesh(false);
+		}
 
 		//if (_plane->IsFacingObjet(_model2))
 		//	std::cout << "is facing" << std::endl;
 		//else
 		//	std::cout << "is not facing paaa" << std::endl;
-
 
 		_camera->LookAt(_camera->transform.position + _camera->transform.forward);
 

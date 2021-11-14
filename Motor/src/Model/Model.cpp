@@ -56,22 +56,22 @@ namespace Coco {
 			return;
 		}
 
-		for (int i = 0; i < _meshList.size(); i++) {
+		for (int i = 0; i < _meshList.size(); i++) 
+			if (_meshList[i]->GetCanDrawMesh()) {
+				uint materialIndex = _meshesToTex[i];
+				if (materialIndex < _texturesList.size() && _texturesList[materialIndex])
+					_texturesList[materialIndex]->UseTexture();
 
-			uint materialIndex = _meshesToTex[i];
-			if (materialIndex < _texturesList.size() && _texturesList[materialIndex])
-				_texturesList[materialIndex]->UseTexture();
+				if (_material != NULL)
+					_renderer->UseMaterial(_material->GetAmbient(), _material->GetSpecular(), _material->GetDiffuse(), _material->GetShininess(),
+						_material->GetUniformAmbient(), _material->GetUniformSpecular(), _material->GetUniformDiffuse(), _material->GetUniformShininess());
 
-			if (_material != NULL)
-				_renderer->UseMaterial(_material->GetAmbient(), _material->GetSpecular(), _material->GetDiffuse(), _material->GetShininess(),
-					_material->GetUniformAmbient(), _material->GetUniformSpecular(), _material->GetUniformDiffuse(), _material->GetUniformShininess());
-
-			_meshList[i]->RenderMesh();
+				_meshList[i]->RenderMesh();
 
 
-			if (materialIndex < _texturesList.size() && _texturesList[materialIndex])
-				_texturesList[materialIndex]->StopTexture();
-		}
+				if (materialIndex < _texturesList.size() && _texturesList[materialIndex])
+					_texturesList[materialIndex]->StopTexture();
+			}
 
 	}
 	void Model::SetMaterial(Material* mat) {

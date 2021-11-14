@@ -18,11 +18,14 @@ namespace Coco {
 		std::string _name;
 		aiNode* _node;
 		bool _isParent;
+		bool _canDrawMesh;
 	public:
 		Mesh(Renderer* rend);
 		~Mesh();
 
 		void CreateMesh(float* vertices, uint* indices, uint numOfVertices, uint numOfIndices);
+		void SetCanDrawMesh(bool value);
+		bool GetCanDrawMesh();
 		void RenderMesh();
 		void ClearMesh();
 		void AddMeshSon(Mesh* mesh);

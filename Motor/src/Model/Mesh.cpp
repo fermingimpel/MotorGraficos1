@@ -21,6 +21,8 @@ namespace Coco {
 		_positionLocation = glGetAttribLocation(_renderer->GetShader(), "pos");
 		_texLocation = glGetAttribLocation(_renderer->GetShader(), "tex");
 		_normalLocation = glGetAttribLocation(_renderer->GetShader(), "norm");
+
+		_canDrawMesh = true;
 	}
 
 	Mesh::~Mesh() {
@@ -55,7 +57,12 @@ namespace Coco {
 
 		glBindVertexArray(0);
 	}
-
+	void Mesh::SetCanDrawMesh(bool value) {
+		_canDrawMesh = value;
+	}
+	bool Mesh::GetCanDrawMesh() {
+		return _canDrawMesh;
+	}
 	void Mesh::RenderMesh() {
 		_renderer->UpdateMVP(matrix.model, _uniformModel, _uniformView, _uniformProjection);
 		_renderer->DrawMesh(indexCount, VAO, VBO, IBO, _affectedByLight);
