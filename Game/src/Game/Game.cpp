@@ -48,7 +48,7 @@ namespace Coco {
 	}
 
 	void Game::Start() {
-		StartEngine(1366,768, "Coco");
+		StartEngine(1366, 768, "Coco");
 		srand(time(NULL));
 
 		_camera = new Camera(GetRenderer());
@@ -71,15 +71,33 @@ namespace Coco {
 		//_model1->SetScale(0.1, 0.1, 0.1);
 
 		_model2 = new Model(GetRenderer());
-		_model2->LoadModel("res/models/cube.fbx", "res/textures/", "img1.jpg");
+		_model2->LoadModel("res/models/body.fbx", "res/textures/", "img1.jpg");
 		_model2->SetScale(0.1, 0.1, 0.1);
-		_model2->SetPos(0, 0, 2);
+		_model2->SetRotations(-90, 0, 0);
+
+		_model2->SetMeshPos(0, 0.33, 0, 1);
+		_model2->SetMeshPos(0, -0.2, 0, 2);
+		_model2->SetMeshPos(0.15, 0, 0, 3);
+		_model2->SetMeshPos(0.15, 0, 0, 4);
+		_model2->SetMeshPos(-0.15, 0, 0, 5);
+		_model2->SetMeshPos(-0.15, 0, 0, 6);
+		_model2->SetMeshPos(0, -0.175, 0, 7);
+		_model2->SetMeshPos(-0.05, -0.175, 0, 8);
+		_model2->SetMeshPos(0, -0.1, -0.05, 9);
+		_model2->SetMeshPos(0.05, -0.175, 0, 10);
+		_model2->SetMeshPos(0, -0.1, -0.05, 11);
+
+		for (int i = 0; i < _model2->GetMeshes().size(); i++) {
+			std::cout << "mesh name:" << _model2->GetMeshes()[i]->GetName() << std::endl;
+		}
+
+		//_model2->SetPos(0, 0, 2);
 
 		_plane = new BSPlane(GetRenderer());
 		_plane->GetModel()->LoadModel("res/models/plane.fbx", "res/textures/", "theolean.jpg");
 		_plane->GetModel()->SetScale(0.1, 0.1, 0.1);
-		_plane->GetModel()->SetPos(0, 0, 1.5);
-		_plane->GetModel()->SetRotations(0,90,0);
+		_plane->GetModel()->SetPos(-1, 0, 2);
+		_plane->GetModel()->SetRotations(0, 90, 0);
 		std::cout << "plane forward: x: " << _plane->GetModel()->transform.forward.x << " y: " << _plane->GetModel()->transform.forward.y << " z: " << _plane->GetModel()->transform.forward.z << std::endl;
 
 		//for (int i = 0; i < _plane->GetModel()->GetMeshes().size(); i++) {
@@ -110,7 +128,10 @@ namespace Coco {
 		GetWindow()->ClearWindow(0.15f, 0.15f, 0.15f, 1.0f);
 
 		rotY += deltaTime * 50.0f;
-		
+
+		//_model2->SetRotations(-90, rotY, 0);
+		_model2->SetRotations(-90, 0, rotY);
+
 		if (Input::GetKey(Keycode::W))
 			_camera->SetPos(_camera->transform.position + (glm::vec3(0, 1, 0) * speed * deltaTime));
 		else if (Input::GetKey(Keycode::S))
@@ -141,6 +162,12 @@ namespace Coco {
 		else if (Input::GetKey(Keycode::L))
 			posXModel -= deltaTime;
 
+		_model2->SetPos(posXModel, 0, 2);
+
+		//if (_plane->IsFacingObjet(_model2))
+		//	std::cout << "is facing" << std::endl;
+		//else
+		//	std::cout << "is not facing paaa" << std::endl;
 
 
 		_camera->LookAt(_camera->transform.position + _camera->transform.forward);
