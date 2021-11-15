@@ -28,9 +28,22 @@ namespace Coco {
 			}
 	}
 
+	void BSPlane::CheckPlaneCamera(Camera* camera) {
+		for (int i = 0; i < _planes.size(); i++) {
+			glm::vec3 dirFromAtoB = glm::normalize(camera->transform.position - _planes[i]->transform.position);
+			float dotProd = glm::dot(dirFromAtoB, _planes[i]->transform.forward);
+
+			if (dotProd < 0.0f) {
+				glm::vec3 rot = _planes[i]->transform.rotation;
+				_planes[i]->SetRotations(rot.x * -1, rot.y * -1, rot.z * -1);
+			}
+		}	
+	}
+
 	void BSPlane::AddPlane(Model* plane) {
 		_planes.push_back(plane);
 	}
+
 	void BSPlane::DrawPlanes() {
 		for (int i = 0; i < _planes.size(); i++)
 			if (_planes[i] != NULL)

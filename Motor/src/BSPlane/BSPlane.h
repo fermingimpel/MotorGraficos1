@@ -3,6 +3,7 @@
 
 #include "../Exports/Exports.h"
 #include "../Model/Model.h"
+#include "../Camera/Camera.h"
 #include <vector>
 namespace Coco {
 
@@ -13,6 +14,7 @@ namespace Coco {
 		~BSPlane();
 
 		void BSPMagic(Model* object);
+		void CheckPlaneCamera(Camera* camera);
 		void AddPlane(Model* plane);
 		void DrawPlanes();
 	};

@@ -180,6 +180,7 @@ namespace Coco {
 
 		_model2->SetPos(posXModel, 0, 2);
 		BSP->BSPMagic(_model2);
+		BSP->CheckPlaneCamera(_camera);
 
 		_camera->LookAt(_camera->transform.position + _camera->transform.forward);
 
