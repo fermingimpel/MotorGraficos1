@@ -77,10 +77,11 @@ namespace Coco {
 		_obsidianMaterial->SetSpecular(glm::vec3(0.332741f, 0.328634f, 0.346435f));
 		_obsidianMaterial->SetShininess(0.3f);
 
-		//_model1 = new Model(GetRenderer());
-		//_model1->LoadModel("res/models/body.fbx", "res/textures/", "img1.jpg");
-		//_model1->SetPos(0, 0, 2);
-		//_model1->SetScale(0.1, 0.1, 0.1);
+		_model1 = new Model(GetRenderer());
+		_model1->LoadModel("res/models/cube.fbx", "res/textures/", "theolean.jpg");
+		_model1->SetPos(0, 0, 2);
+		_model1->SetScale(0.1, 0.1, 0.1);
+
 #pragma region Model2
 		_model2 = new Model(GetRenderer());
 		_model2->LoadModel("res/models/body.fbx", "res/textures/", "img1.jpg");
@@ -124,6 +125,9 @@ namespace Coco {
 		BSP->AddPlane(_planeDown);
 
 		_planeBack = NULL;
+
+		BSP->AddModelToCheck(_model1);
+		BSP->AddModelToCheck(_model2);
 	}
 	void Game::Play() {
 		UpdateEngine();
@@ -147,6 +151,7 @@ namespace Coco {
 		GetWindow()->ClearWindow(0.15f, 0.15f, 0.15f, 1.0f);
 
 		rotY += deltaTime * 50.0f;
+		_model1->SetRotations(-180, rotY, 0);
 
 		if (Input::GetKey(Keycode::W))
 			_camera->SetPos(_camera->transform.position + (glm::vec3(0, 1, 0) * speed * deltaTime));
@@ -179,7 +184,8 @@ namespace Coco {
 			posXModel -= deltaTime;
 
 		_model2->SetPos(posXModel, 0, 2);
-		BSP->BSPMagic(_model2);
+
+		BSP->BSPMagic();
 		BSP->CheckPlaneCamera(_camera);
 
 		_camera->LookAt(_camera->transform.position + _camera->transform.forward);
@@ -188,6 +194,7 @@ namespace Coco {
 		GetRenderer()->SetView(_camera->GetViewMatrix());
 		GetLightManager()->UseLights();
 
+		_model1->DrawModel();
 		_model2->DrawModel();
 		BSP->DrawPlanes();
 
