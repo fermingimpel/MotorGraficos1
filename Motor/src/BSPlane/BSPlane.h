@@ -3,17 +3,18 @@
 
 #include "../Exports/Exports.h"
 #include "../Model/Model.h"
-
+#include <vector>
 namespace Coco {
 
 	class GraficosEngine_API BSPlane {
-		Model* _model;
+		std::vector<Model*> _planes;
 	public:
-		BSPlane(Renderer* rend);
+		BSPlane();
 		~BSPlane();
 
-		bool IsFacingObjet(Entity* object);
-		Model* GetModel();
+		void BSPMagic(Model* object);
+		void AddPlane(Model* plane);
+		void DrawPlanes();
 	};
 
 }

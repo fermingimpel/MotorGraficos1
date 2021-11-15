@@ -41,9 +41,21 @@ namespace Coco {
 			delete _model2;
 			_model2 = NULL;
 		}
-		if (_plane != NULL) {
-			delete _plane;
-			_plane = NULL;
+		if (BSP != NULL) {
+			delete BSP;
+			BSP = NULL;
+		}
+		if (_planeLeft != NULL) {
+			delete _planeLeft;
+			_planeLeft = NULL;
+		}
+		if (_planeBack != NULL) {
+			delete _planeBack;
+			_planeBack = NULL;
+		}
+		if (_planeDown != NULL) {
+			delete _planeDown;
+			_planeDown = NULL;
 		}
 	}
 
@@ -69,7 +81,7 @@ namespace Coco {
 		//_model1->LoadModel("res/models/body.fbx", "res/textures/", "img1.jpg");
 		//_model1->SetPos(0, 0, 2);
 		//_model1->SetScale(0.1, 0.1, 0.1);
-
+#pragma region Model2
 		_model2 = new Model(GetRenderer());
 		_model2->LoadModel("res/models/body.fbx", "res/textures/", "img1.jpg");
 		_model2->SetScale(0.1, 0.1, 0.1);
@@ -87,19 +99,31 @@ namespace Coco {
 		_model2->SetMeshPos(0.05, -0.175, 0, 10);
 		_model2->SetMeshPos(0, -0.1, -0.05, 11);
 
+#pragma endregion
+
 		//for (int i = 0; i < _model2->GetMeshes().size(); i++) {
 		//	std::cout << "mesh name:" << _model2->GetMeshes()[i]->GetName() << std::endl;
 		//}
 
 		//_model2->SetPos(0, 0, 2);
 
-		_plane = new BSPlane(GetRenderer());
-		_plane->GetModel()->LoadModel("res/models/plane.fbx", "res/textures/", "theolean.jpg");
-		_plane->GetModel()->SetScale(0.1, 0.1, 0.1);
-		_plane->GetModel()->SetPos(-1, 0, 2);
-		_plane->GetModel()->SetRotations(0, 90, 0);
-		//std::cout << "plane forward: x: " << _plane->GetModel()->transform.forward.x << " y: " << _plane->GetModel()->transform.forward.y << " z: " << _plane->GetModel()->transform.forward.z << std::endl;
+		BSP = new BSPlane();
 
+		_planeLeft = new Model(GetRenderer());
+		_planeLeft->LoadModel("res/models/plane.fbx", "res/textures/", "theolean.jpg");
+		_planeLeft->SetScale(0.1, 0.1, 0.1);
+		_planeLeft->SetPos(0.5, 0, 2);
+		_planeLeft->SetRotations(0, -90, 0);
+		BSP->AddPlane(_planeLeft);
+
+		_planeDown = new Model(GetRenderer());
+		_planeDown->LoadModel("res/models/plane.fbx", "res/textures/", "theolean.jpg");
+		_planeDown->SetScale(0.1, 0.1, 0.1);
+		_planeDown->SetPos(0, -0.5, 2);
+		_planeDown->SetRotations(-90, 0, 0);
+		BSP->AddPlane(_planeDown);
+
+		_planeBack = NULL;
 	}
 	void Game::Play() {
 		UpdateEngine();
@@ -155,17 +179,7 @@ namespace Coco {
 			posXModel -= deltaTime;
 
 		_model2->SetPos(posXModel, 0, 2);
-		for (int i = 0; i < _model2->GetMeshes().size(); i++) {
-			if (_plane->IsFacingObjet(_model2->GetMeshes()[i]))
-				_model2->GetMeshes()[i]->SetCanDrawMesh(true);
-			else 
-				_model2->GetMeshes()[i]->SetCanDrawMesh(false);
-		}
-
-		//if (_plane->IsFacingObjet(_model2))
-		//	std::cout << "is facing" << std::endl;
-		//else
-		//	std::cout << "is not facing paaa" << std::endl;
+		BSP->BSPMagic(_model2);
 
 		_camera->LookAt(_camera->transform.position + _camera->transform.forward);
 
@@ -173,10 +187,8 @@ namespace Coco {
 		GetRenderer()->SetView(_camera->GetViewMatrix());
 		GetLightManager()->UseLights();
 
-		//_model1->DrawModel();
-
 		_model2->DrawModel();
-		_plane->GetModel()->DrawModel();
+		BSP->DrawPlanes();
 
 		GetWindow()->SwapBuffers();
 	}

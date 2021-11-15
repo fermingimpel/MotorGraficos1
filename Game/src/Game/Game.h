@@ -12,7 +12,10 @@ namespace Coco {
 		Material* _obsidianMaterial;
 		Model* _model1;
 		Model* _model2;
-		BSPlane* _plane;
+		Model* _planeLeft;
+		Model* _planeBack;
+		Model* _planeDown;
+		BSPlane* BSP;
 	public:
 		Game();
 		~Game();
