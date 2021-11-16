@@ -23,6 +23,12 @@ namespace Coco {
 		_normalLocation = glGetAttribLocation(_renderer->GetShader(), "norm");
 
 		_canDrawMesh = true;
+
+
+		_minCollConst	=glm::vec3(0,0,0);
+		_minColl		=glm::vec3(0,0,0);
+		_maxCollConst	=glm::vec3(0,0,0);
+		_maxColl		=glm::vec3(0,0,0);
 	}
 
 
@@ -197,8 +203,8 @@ namespace Coco {
 
 		matrix.translate = glm::translate(glm::mat4(1.0f), transform.position);
 
-		_minColl = _minCollConst + transform.position;
-		_maxColl = _maxCollConst + transform.position;
+		_minColl = (_minCollConst * transform.scale)+ transform.position;
+		_maxColl = (_maxCollConst * transform.scale)+ transform.position;
 
 		for (int i = 0; i < _meshSons.size(); i++)
 			_meshSons[i]->UpdateSonsPos();
@@ -258,6 +264,9 @@ namespace Coco {
 	void Mesh::UpdateSonsScale() {
 		transform.scale = _meshParent->transform.scale * transform.localScale;
 		matrix.scale = glm::scale(glm::mat4(1.0f), transform.scale);
+
+		_minColl = (_minCollConst * transform.scale) + transform.position;
+		_maxColl = (_maxCollConst * transform.scale) + transform.position;
 
 		for (int i = 0; i < _meshSons.size(); i++)
 			_meshSons[i]->UpdateSonsScale();

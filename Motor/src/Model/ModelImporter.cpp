@@ -77,6 +77,35 @@ namespace Coco {
 		for (size_t i = 0; i < node->mNumMeshes; i++) {
 			Mesh* m = LoadMesh(scene->mMeshes[node->mMeshes[i]], scene);
 			m->SetNode(node);
+			
+			float minX = 0;
+			float maxX = 0;
+			float minY = 0;
+			float maxY = 0;
+			float minZ = 0;
+			float maxZ = 0;
+			for (int k = 0; k < scene->mMeshes[node->mMeshes[i]]->mVertices->Length(); k++) {
+				if (scene->mMeshes[node->mMeshes[i]]->mVertices[k].x > maxX)
+					maxX = scene->mMeshes[node->mMeshes[i]]->mVertices[k].x;
+				else if (scene->mMeshes[node->mMeshes[i]]->mVertices[k].x < minX)
+					minX = scene->mMeshes[node->mMeshes[i]]->mVertices[k].x;
+				if (scene->mMeshes[node->mMeshes[i]]->mVertices[k].y > maxY)
+					maxY = scene->mMeshes[node->mMeshes[i]]->mVertices[k].y;
+				else if (scene->mMeshes[node->mMeshes[i]]->mVertices[k].y < minY)
+					minY = scene->mMeshes[node->mMeshes[i]]->mVertices[k].y;
+				if (scene->mMeshes[node->mMeshes[i]]->mVertices[k].z > maxZ)
+					maxZ = scene->mMeshes[node->mMeshes[i]]->mVertices[k].z;
+				else if (scene->mMeshes[node->mMeshes[i]]->mVertices[k].z < minZ)
+					minZ = scene->mMeshes[node->mMeshes[i]]->mVertices[k].z;
+			}
+
+			m->SetMinColl(glm::vec3(minX, minY, minZ));
+			m->SetMaxColl(glm::vec3(maxX, maxY, maxZ));
+
+			std::cout << "name: " << node->mName.C_Str() << std::endl;
+			std::cout << "min x: " << minX << " y: " << minY << " z: " << minZ << std::endl;
+			std::cout << "max x: " << maxX << " y: " << maxY << " z: " << maxZ << std::endl;
+			std::cout << std::endl;
 
 			for (int i = 0; i < _meshesParent.size(); i++) 
 				if (m->GetNode()->mParent == _meshesParent[i]->GetNode()) {
