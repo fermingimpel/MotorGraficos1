@@ -19,6 +19,11 @@ namespace Coco {
 		aiNode* _node;
 		bool _isParent;
 		bool _canDrawMesh;
+
+		glm::vec3 _minCollConst;
+		glm::vec3 _minColl;
+		glm::vec3 _maxCollConst;
+		glm::vec3 _maxColl;
 	public:
 		Mesh(Renderer* rend);
 		~Mesh();
@@ -53,6 +58,11 @@ namespace Coco {
 		void UpdateSonsRotZ();
 		void UpdateSonsRotations();
 		void UpdateSonsScale();
+
+		void SetMinColl(glm::vec3 value);
+		void SetMaxColl(glm::vec3 value);
+		glm::vec3 GetMinColl();
+		glm::vec3 GetMaxColl();
 	};
 
 }

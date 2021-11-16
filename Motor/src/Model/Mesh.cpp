@@ -196,13 +196,14 @@ namespace Coco {
 		transform.position = _meshParent->transform.position + transform.localPosition;
 
 		matrix.translate = glm::translate(glm::mat4(1.0f), transform.position);
+
+		_minColl = _minCollConst + transform.position;
+		_maxColl = _maxCollConst + transform.position;
+
 		for (int i = 0; i < _meshSons.size(); i++)
 			_meshSons[i]->UpdateSonsPos();
 
-
-
 		UpdateMatrixData();
-
 	}
 
 	void Mesh::UpdateSonsRotX() {
@@ -295,5 +296,21 @@ namespace Coco {
 	}
 	std::vector<Mesh*> Mesh::GetMeshesSons() {
 		return _meshSons;
+	}
+
+	void Mesh::SetMinColl(glm::vec3 value) {
+		_minCollConst = value;
+	}
+
+	void Mesh::SetMaxColl(glm::vec3 value) {
+		_maxCollConst = value;
+	}
+
+	glm::vec3 Mesh::GetMinColl() {
+		return _minColl;
+	}
+
+	glm::vec3 Mesh::GetMaxColl() {
+		return _maxColl;
 	}
 }

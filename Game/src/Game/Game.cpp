@@ -87,7 +87,11 @@ namespace Coco {
 		_model2->LoadModel("res/models/body.fbx", "res/textures/", "img1.jpg");
 		_model2->SetScale(0.1, 0.1, 0.1);
 		_model2->SetRotations(-90, 0, 0);
-
+		float val = 0.075f;
+		for (int i = 0; i < _model2->GetMeshes().size(); i++) 		{
+			_model2->GetMeshes()[i]->SetMinColl(glm::vec3(-val, -val, 0));
+			_model2->GetMeshes()[i]->SetMaxColl(glm::vec3(val, val, 0));
+		}
 		_model2->SetMeshPos(0, 0.33, 0, 1);
 		_model2->SetMeshPos(0, -0.2, 0, 2);
 		_model2->SetMeshPos(0.15, 0, 0, 3);
@@ -100,6 +104,12 @@ namespace Coco {
 		_model2->SetMeshPos(0.05, -0.175, 0, 10);
 		_model2->SetMeshPos(0, -0.1, -0.05, 11);
 
+		for (int i = 0; i < _model2->GetMeshes().size(); i++) {
+			std::cout << "name: " << _model2->GetMeshes()[i]->GetName() << std::endl;
+			std::cout << "min coll: x: " << _model2->GetMeshes()[i]->GetMinColl().x << " y: " << _model2->GetMeshes()[i]->GetMinColl().y << " z: " << _model2->GetMeshes()[i]->GetMinColl().z << std::endl;
+			std::cout << "max coll: x: " << _model2->GetMeshes()[i]->GetMaxColl().x << " y: " << _model2->GetMeshes()[i]->GetMaxColl().y << " z: " << _model2->GetMeshes()[i]->GetMaxColl().z << std::endl;
+			std::cout << std::endl;
+		}
 
 		_model2->SetPos(0, 0, 2);
 #pragma endregion
@@ -200,6 +210,18 @@ namespace Coco {
 			posZModel -= deltaTime;
 
 		_model2->SetPos(posXModel, posYModel, posZModel);
+
+		for (int i = 0; i < _model2->GetMeshes().size(); i++) {
+			std::cout << "name: " << _model2->GetMeshes()[i]->GetName() << std::endl;
+			std::cout << "min coll: x: " << _model2->GetMeshes()[i]->GetMinColl().x << " y: " << _model2->GetMeshes()[i]->GetMinColl().y << " z: " << _model2->GetMeshes()[i]->GetMinColl().z << std::endl;
+			std::cout << "max coll: x: " << _model2->GetMeshes()[i]->GetMaxColl().x << " y: " << _model2->GetMeshes()[i]->GetMaxColl().y << " z: " << _model2->GetMeshes()[i]->GetMaxColl().z << std::endl;
+			std::cout << std::endl;
+		}
+
+		std::cout << std::endl;
+		std::cout << std::endl;
+		std::cout << std::endl;
+
 
 		BSP->BSPMagic();
 		BSP->CheckPlaneCamera(_camera);

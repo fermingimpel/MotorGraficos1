@@ -18,17 +18,31 @@ namespace Coco {
 				std::vector<Mesh*> aux = _objects[x]->GetMeshes();
 				for (int i = 0; i < _planes.size(); i++)
 					for (int j = 0; j < aux.size(); j++) {
-						glm::vec3 dirFromAtoB = glm::normalize(aux[j]->transform.position - _planes[i].model->transform.position);
-						float dotProd = glm::dot(dirFromAtoB, _planes[i].model->transform.forward);
-						if (dotProd >= 0.0f) {
+						glm::vec3 dirA = glm::normalize(aux[j]->GetMinColl() - _planes[i].model->transform.position);
+						float dotProdA = glm::dot(dirA, _planes[i].model->transform.forward);
+
+						glm::vec3 dirB = glm::normalize(aux[j]->GetMaxColl() - _planes[i].model->transform.position);
+						float dotProdB  = glm::dot(dirB, _planes[i].model->transform.forward);
+
+						if (dotProdA >= 0.0f || dotProdB >= 0.0f)
 							aux[j]->SetCanDrawMesh(true);
-						}
 						else {
 							aux[j]->SetCanDrawMesh(false);
 							aux.erase(aux.begin() + j);
 							j--;
-						
 						}
+
+						//glm::vec3 dirFromAtoB = glm::normalize(aux[j]->transform.position - _planes[i].model->transform.position);
+						//float dotProd = glm::dot(dirFromAtoB, _planes[i].model->transform.forward);
+						//if (dotProd >= 0.0f) {
+						//	aux[j]->SetCanDrawMesh(true);
+						//}
+						//else {
+						//	aux[j]->SetCanDrawMesh(false);
+						//	aux.erase(aux.begin() + j);
+						//	j--;
+						//
+						//}
 					}
 			}
 		}
