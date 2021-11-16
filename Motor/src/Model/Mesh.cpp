@@ -25,6 +25,7 @@ namespace Coco {
 		_canDrawMesh = true;
 	}
 
+
 	Mesh::~Mesh() {
 		ClearMesh();
 	}
@@ -92,9 +93,9 @@ namespace Coco {
 
 		if (_meshParent)
 			transform.position = _meshParent->transform.position + transform.localPosition;
-		else 				
+		else
 			transform.position = transform.localPosition;
-		
+
 		matrix.translate = glm::translate(glm::mat4(1.0f), transform.position);
 
 		for (int i = 0; i < _meshSons.size(); i++)
@@ -197,6 +198,8 @@ namespace Coco {
 		matrix.translate = glm::translate(glm::mat4(1.0f), transform.position);
 		for (int i = 0; i < _meshSons.size(); i++)
 			_meshSons[i]->UpdateSonsPos();
+
+
 
 		UpdateMatrixData();
 

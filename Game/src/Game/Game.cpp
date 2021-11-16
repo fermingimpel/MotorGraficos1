@@ -78,9 +78,9 @@ namespace Coco {
 		_obsidianMaterial->SetShininess(0.3f);
 
 		_model1 = new Model(GetRenderer());
-		_model1->LoadModel("res/models/cube.fbx", "res/textures/", "theolean.jpg");
+		_model1->LoadModel("res/models/chacaritaghost/ghost.obj", "res/models/chacaritaghost/", "Ghost_lambert1_BaseColor.png");
 		_model1->SetPos(0, 0, 2);
-		_model1->SetScale(0.1, 0.1, 0.1);
+		_model1->SetScale(0.2, 0.2, 0.2);
 
 #pragma region Model2
 		_model2 = new Model(GetRenderer());
@@ -100,6 +100,8 @@ namespace Coco {
 		_model2->SetMeshPos(0.05, -0.175, 0, 10);
 		_model2->SetMeshPos(0, -0.1, -0.05, 11);
 
+
+		_model2->SetPos(0, 0, 2);
 #pragma endregion
 
 		//for (int i = 0; i < _model2->GetMeshes().size(); i++) {
@@ -113,14 +115,14 @@ namespace Coco {
 		_planeLeft = new Model(GetRenderer());
 		_planeLeft->LoadModel("res/models/plane.fbx", "res/textures/", "theolean.jpg");
 		_planeLeft->SetScale(0.1, 0.1, 0.1);
-		_planeLeft->SetPos(0.5, 0, 2);
+		_planeLeft->SetPos(1, 0, 2);
 		_planeLeft->SetRotations(0, -90, 0);
 		BSP->AddPlane(_planeLeft);
 
 		_planeDown = new Model(GetRenderer());
 		_planeDown->LoadModel("res/models/plane.fbx", "res/textures/", "theolean.jpg");
 		_planeDown->SetScale(0.1, 0.1, 0.1);
-		_planeDown->SetPos(0, -0.5, 2);
+		_planeDown->SetPos(0, -1, 2);
 		_planeDown->SetRotations(-90, 0, 0);
 		BSP->AddPlane(_planeDown);
 
@@ -145,13 +147,13 @@ namespace Coco {
 	bool inFirstPersonMode = false;
 
 	float posXModel = 0.0f;
-	float posXFootModel = 0.0f;
+	float posYModel = 0.0f;
 
 	void Game::Update(float deltaTime) {
 		GetWindow()->ClearWindow(0.15f, 0.15f, 0.15f, 1.0f);
 
 		rotY += deltaTime * 50.0f;
-		_model1->SetRotations(-180, rotY, 0);
+		_model1->SetRotations(0, rotY, 0);
 
 		if (Input::GetKey(Keycode::W))
 			_camera->SetPos(_camera->transform.position + (glm::vec3(0, 1, 0) * speed * deltaTime));
@@ -182,8 +184,12 @@ namespace Coco {
 			posXModel += deltaTime;
 		else if (Input::GetKey(Keycode::L))
 			posXModel -= deltaTime;
+		if (Input::GetKey(Keycode::I))
+			posYModel += deltaTime;
+		else if (Input::GetKey(Keycode::K))
+			posYModel -= deltaTime;
 
-		_model2->SetPos(posXModel, 0, 2);
+		_model2->SetPos(posXModel, posYModel, 2);
 
 		BSP->BSPMagic();
 		BSP->CheckPlaneCamera(_camera);

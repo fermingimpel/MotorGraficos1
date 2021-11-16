@@ -27,7 +27,7 @@ namespace Coco {
 							aux[j]->SetCanDrawMesh(false);
 							aux.erase(aux.begin() + j);
 							j--;
-
+						
 						}
 					}
 			}
@@ -39,7 +39,7 @@ namespace Coco {
 			glm::vec3 dirFromAtoB = glm::normalize(camera->transform.position - _planes[i]->transform.position);
 			float dotProd = glm::dot(dirFromAtoB, _planes[i]->transform.forward);
 
-			if (dotProd < 0.0f) {
+			if (dotProd < 0) {
 				glm::vec3 rot = _planes[i]->transform.rotation;
 				_planes[i]->SetRotations(rot.x * -1, rot.y * -1, rot.z * -1);
 			}
