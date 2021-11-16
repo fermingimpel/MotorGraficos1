@@ -7,8 +7,14 @@
 #include <vector>
 namespace Coco {
 
+
 	class GraficosEngine_API BSPlane {
-		std::vector<Model*> _planes;
+		struct Plane {
+			Model* model;
+			glm::vec3 angleLookA;
+			glm::vec3 angleLookB;
+		};
+		std::vector<Plane> _planes;
 		std::vector<Model*> _objects;
 	public:
 		BSPlane();
@@ -16,7 +22,7 @@ namespace Coco {
 
 		void BSPMagic();
 		void CheckPlaneCamera(Camera* camera);
-		void AddPlane(Model* plane);
+		void AddPlane(Model* model, glm::vec3 angleLookA, glm::vec3 angleLookB);
 		void AddModelToCheck(Model* object);
 		void DrawPlanes();
 	};

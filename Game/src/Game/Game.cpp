@@ -117,16 +117,21 @@ namespace Coco {
 		_planeLeft->SetScale(0.1, 0.1, 0.1);
 		_planeLeft->SetPos(1, 0, 2);
 		_planeLeft->SetRotations(0, -90, 0);
-		BSP->AddPlane(_planeLeft);
+		BSP->AddPlane(_planeLeft, glm::vec3(0,-90,0), glm::vec3(0,90,0));
 
 		_planeDown = new Model(GetRenderer());
 		_planeDown->LoadModel("res/models/plane.fbx", "res/textures/", "theolean.jpg");
 		_planeDown->SetScale(0.1, 0.1, 0.1);
 		_planeDown->SetPos(0, -1, 2);
 		_planeDown->SetRotations(-90, 0, 0);
-		BSP->AddPlane(_planeDown);
+		BSP->AddPlane(_planeDown, glm::vec3(-90,0,0), glm::vec3(90,0,0));
 
-		_planeBack = NULL;
+		_planeBack = new Model(GetRenderer());
+		_planeBack->LoadModel("res/models/plane.fbx", "res/textures/", "theolean.jpg");
+		_planeBack->SetScale(0.1, 0.1, 0.1);
+		_planeBack->SetPos(0, 0, 3);
+		_planeBack->SetRotations(0, 0, 0);
+		BSP->AddPlane(_planeBack, glm::vec3(0,0,0), glm::vec3(0,180,0));
 
 		BSP->AddModelToCheck(_model1);
 		BSP->AddModelToCheck(_model2);
@@ -148,6 +153,7 @@ namespace Coco {
 
 	float posXModel = 0.0f;
 	float posYModel = 0.0f;
+	float posZModel = 2.0f;
 
 	void Game::Update(float deltaTime) {
 		GetWindow()->ClearWindow(0.15f, 0.15f, 0.15f, 1.0f);
@@ -188,8 +194,12 @@ namespace Coco {
 			posYModel += deltaTime;
 		else if (Input::GetKey(Keycode::K))
 			posYModel -= deltaTime;
+		if (Input::GetKey(Keycode::U))
+			posZModel += deltaTime;
+		else if (Input::GetKey(Keycode::O))
+			posZModel -= deltaTime;
 
-		_model2->SetPos(posXModel, posYModel, 2);
+		_model2->SetPos(posXModel, posYModel, posZModel);
 
 		BSP->BSPMagic();
 		BSP->CheckPlaneCamera(_camera);

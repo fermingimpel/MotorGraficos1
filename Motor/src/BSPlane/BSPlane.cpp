@@ -18,8 +18,8 @@ namespace Coco {
 				std::vector<Mesh*> aux = _objects[x]->GetMeshes();
 				for (int i = 0; i < _planes.size(); i++)
 					for (int j = 0; j < aux.size(); j++) {
-						glm::vec3 dirFromAtoB = glm::normalize(aux[j]->transform.position - _planes[i]->transform.position);
-						float dotProd = glm::dot(dirFromAtoB, _planes[i]->transform.forward);
+						glm::vec3 dirFromAtoB = glm::normalize(aux[j]->transform.position - _planes[i].model->transform.position);
+						float dotProd = glm::dot(dirFromAtoB, _planes[i].model->transform.forward);
 						if (dotProd >= 0.0f) {
 							aux[j]->SetCanDrawMesh(true);
 						}
@@ -36,12 +36,17 @@ namespace Coco {
 
 	void BSPlane::CheckPlaneCamera(Camera* camera) {
 		for (int i = 0; i < _planes.size(); i++) {
-			glm::vec3 dirFromAtoB = glm::normalize(camera->transform.position - _planes[i]->transform.position);
-			float dotProd = glm::dot(dirFromAtoB, _planes[i]->transform.forward);
-
+			glm::vec3 dirFromAtoB = glm::normalize(camera->transform.position - _planes[i].model->transform.position);
+			float dotProd = glm::dot(dirFromAtoB, _planes[i].model->transform.forward);
+		
 			if (dotProd < 0) {
-				glm::vec3 rot = _planes[i]->transform.rotation;
-				_planes[i]->SetRotations(rot.x * -1, rot.y * -1, rot.z * -1);
+				glm::vec3 rot;
+				if (_planes[i].model->transform.rotation == _planes[i].angleLookA)
+					rot = _planes[i].angleLookB;
+				else
+					rot = _planes[i].angleLookA;
+
+				_planes[i].model->SetRotations(rot);
 			}
 		}	
 	}
@@ -50,13 +55,17 @@ namespace Coco {
 		_objects.push_back(object);
 	}
 
-	void BSPlane::AddPlane(Model* plane) {
+	void BSPlane::AddPlane(Model* model, glm::vec3 angleLookA, glm::vec3 angleLookB) {
+		Plane plane;
+		plane.model = model;
+		plane.angleLookA = angleLookA;
+		plane.angleLookB = angleLookB;
 		_planes.push_back(plane);
 	}
 
 	void BSPlane::DrawPlanes() {
 		for (int i = 0; i < _planes.size(); i++)
-			if (_planes[i] != NULL)
-				_planes[i]->DrawModel();
+			if (_planes[i].model != NULL)
+				_planes[i].model->DrawModel();
 	}
 }
