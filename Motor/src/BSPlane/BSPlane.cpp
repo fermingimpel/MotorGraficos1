@@ -31,18 +31,6 @@ namespace Coco {
 							aux.erase(aux.begin() + j);
 							j--;
 						}
-
-						//glm::vec3 dirFromAtoB = glm::normalize(aux[j]->transform.position - _planes[i].model->transform.position);
-						//float dotProd = glm::dot(dirFromAtoB, _planes[i].model->transform.forward);
-						//if (dotProd >= 0.0f) {
-						//	aux[j]->SetCanDrawMesh(true);
-						//}
-						//else {
-						//	aux[j]->SetCanDrawMesh(false);
-						//	aux.erase(aux.begin() + j);
-						//	j--;
-						//
-						//}
 					}
 			}
 		}

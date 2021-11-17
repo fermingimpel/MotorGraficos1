@@ -203,8 +203,8 @@ namespace Coco {
 
 		matrix.translate = glm::translate(glm::mat4(1.0f), transform.position);
 
-		_minColl = (_minCollConst * transform.scale)+ transform.position;
-		_maxColl = (_maxCollConst * transform.scale)+ transform.position;
+		_minColl = (_minCollConst * transform.scale) + transform.position;
+		_maxColl = (_maxCollConst * transform.scale) + transform.position;
 
 		for (int i = 0; i < _meshSons.size(); i++)
 			_meshSons[i]->UpdateSonsPos();
