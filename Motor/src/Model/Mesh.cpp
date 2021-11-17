@@ -322,4 +322,11 @@ namespace Coco {
 	glm::vec3 Mesh::GetMaxColl() {
 		return _maxColl;
 	}
+
+	void Mesh::SetMeshAndSonsCanDraw(Mesh* mesh, bool value) {
+		for (int i = 0; i < mesh->GetMeshesSons().size(); i++) {
+			mesh->SetCanDrawMesh(value);
+			mesh->SetMeshAndSonsCanDraw(mesh->GetMeshesSons()[i], value);
+		}
+	}
 }

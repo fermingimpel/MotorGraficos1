@@ -140,7 +140,7 @@ namespace Coco {
 		_planeBack->SetRotations(0, 0, 0);
 		BSP->AddPlane(_planeBack, glm::vec3(0,0,0), glm::vec3(0,180,0));
 
-		BSP->AddModelToCheck(_model1);
+		//BSP->AddModelToCheck(_model1);
 		BSP->AddModelToCheck(_model2);
 	}
 	void Game::Play() {

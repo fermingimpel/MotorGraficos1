@@ -63,6 +63,8 @@ namespace Coco {
 		void SetMaxColl(glm::vec3 value);
 		glm::vec3 GetMinColl();
 		glm::vec3 GetMaxColl();
+
+		void SetMeshAndSonsCanDraw(Mesh* mesh, bool value);
 	};
 
 }

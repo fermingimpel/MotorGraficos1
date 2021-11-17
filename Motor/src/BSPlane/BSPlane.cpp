@@ -13,27 +13,81 @@ namespace Coco {
 	}
 
 	void BSPlane::BSPMagic() {
-		for (int x = 0; x < _objects.size(); x++) {
-			if (_objects[x] != NULL) {
-				std::vector<Mesh*> aux = _objects[x]->GetMeshes();
-				for (int i = 0; i < _planes.size(); i++)
-					for (int j = 0; j < aux.size(); j++) {
-						glm::vec3 dirA = glm::normalize(aux[j]->GetMinColl() - _planes[i].model->transform.position);
-						float dotProdA = glm::dot(dirA, _planes[i].model->transform.forward);
+		//for (int x = 0; x < _objects.size(); x++) {
+		//	if (_objects[x] != NULL) {
+		//		std::vector<Mesh*> aux = _objects[x]->GetMeshes();
+		//		for (int i = 0; i < _planes.size(); i++)
+		//			for (int j = 0; j < aux.size(); j++) {
+		//				glm::vec3 dirA = glm::normalize(aux[j]->GetMinColl() - _planes[i].model->transform.position);
+		//				float dotProdA = glm::dot(dirA, _planes[i].model->transform.forward);
+		//
+		//				glm::vec3 dirB = glm::normalize(aux[j]->GetMaxColl() - _planes[i].model->transform.position);
+		//				float dotProdB  = glm::dot(dirB, _planes[i].model->transform.forward);
+		//
+		//				if (dotProdA >= 0.0f || dotProdB >= 0.0f)
+		//					aux[j]->SetCanDrawMesh(true);
+		//				else {
+		//					aux[j]->SetCanDrawMesh(false);
+		//					aux.erase(aux.begin() + j);
+		//					j--;
+		//				}
+		//			}
+		//	}
+		//}
 
-						glm::vec3 dirB = glm::normalize(aux[j]->GetMaxColl() - _planes[i].model->transform.position);
-						float dotProdB  = glm::dot(dirB, _planes[i].model->transform.forward);
+		for (int i = 0; i < _objects.size(); i++)
+			for (int j = 0; j < _objects[i]->GetMeshes()[0]->GetMeshesSons().size(); j++)
+				CheckObjectBSP(_objects[i]->GetMeshes()[0]->GetMeshesSons()[j]);
+	}
 
-						if (dotProdA >= 0.0f || dotProdB >= 0.0f)
-							aux[j]->SetCanDrawMesh(true);
-						else {
-							aux[j]->SetCanDrawMesh(false);
-							aux.erase(aux.begin() + j);
-							j--;
-						}
-					}
+	void BSPlane::CheckObjectBSP(Mesh* mesh) {
+		std::cout << "name: " << mesh->GetName() << std::endl << std::endl;
+		bool checkPassed = true;
+		for (int i = 0; i < _planes.size(); i++) {
+			glm::vec3 dirA = glm::normalize(mesh->GetMinColl() - _planes[i].model->transform.position);
+			float dotProdA = glm::dot(dirA, _planes[i].model->transform.forward);
+
+			glm::vec3 dirB = glm::normalize(mesh->GetMaxColl() - _planes[i].model->transform.position);
+			float dotProdB = glm::dot(dirB, _planes[i].model->transform.forward);
+
+			if (dotProdA < 0.0f && dotProdB < 0.0f) {
+				checkPassed = false;
+				break;
 			}
 		}
+
+		if (checkPassed) {
+			mesh->SetCanDrawMesh(true);
+			for (int i = 0; i < mesh->GetMeshesSons().size(); i++)
+				CheckObjectBSP(mesh->GetMeshesSons()[i]);
+		}
+		else {
+			mesh->SetCanDrawMesh(false);
+			mesh->SetMeshAndSonsCanDraw(mesh, false);
+		}
+
+		//for (int i = 0; i < mesh->GetMeshesSons().size(); i++) 		{
+		//	std::cout << "mesh checking: " << mesh->GetName() << std::endl << std::endl;
+		//	for (int j = 0; j < _planes.size(); j++) {
+		//		glm::vec3 dirA = glm::normalize(mesh->GetMeshesSons()[i]->GetMinColl() - _planes[j].model->transform.position);
+		//		float dotProdA = glm::dot(dirA, _planes[j].model->transform.forward);
+		//
+		//		glm::vec3 dirB = glm::normalize(mesh->GetMeshesSons()[i]->GetMaxColl() - _planes[j].model->transform.position);
+		//		float dotProdB = glm::dot(dirB, _planes[j].model->transform.forward);
+		//
+		//		if (dotProdA >= 0.0f || dotProdB >= 0.0f) {
+		//			mesh->SetCanDrawMesh(true);
+		//			if (mesh->GetMeshesSons()[i]->GetMeshesSons().size() > 0)
+		//				CheckObjectBSP(mesh->GetMeshesSons()[i]->GetMeshesSons()[0]);
+		//		}
+		//		else {
+		//			//mesh->SetCanDrawMesh(false);
+		//			//mesh->SetMeshAndSonsCanDraw(mesh, false);
+		//			//j = _planes.size();
+		//			//std::cout << mesh->GetName() << " is out of the bsp" << std::endl << std::endl;
+		//		}
+		//	}
+		//}
 	}
 
 	void BSPlane::CheckPlaneCamera(Camera* camera) {

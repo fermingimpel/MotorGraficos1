@@ -21,6 +21,7 @@ namespace Coco {
 		~BSPlane();
 
 		void BSPMagic();
+		void CheckObjectBSP(Mesh* mesh);
 		void CheckPlaneCamera(Camera* camera);
 		void AddPlane(Model* model, glm::vec3 angleLookA, glm::vec3 angleLookB);
 		void AddModelToCheck(Model* object);
