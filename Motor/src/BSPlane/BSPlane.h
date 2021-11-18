@@ -16,6 +16,7 @@ namespace Coco {
 		};
 		std::vector<Plane> _planes;
 		std::vector<Model*> _objects;
+		bool IsObjectIsOnPlane(Mesh* mesh);
 	public:
 		BSPlane();
 		~BSPlane();

@@ -25,10 +25,10 @@ namespace Coco {
 		_canDrawMesh = true;
 
 
-		_minCollConst	=glm::vec3(0,0,0);
-		_minColl		=glm::vec3(0,0,0);
-		_maxCollConst	=glm::vec3(0,0,0);
-		_maxColl		=glm::vec3(0,0,0);
+		_minCollConst = glm::vec3(0, 0, 0);
+		_minColl = glm::vec3(0, 0, 0);
+		_maxCollConst = glm::vec3(0, 0, 0);
+		_maxColl = glm::vec3(0, 0, 0);
 	}
 
 
@@ -71,8 +71,10 @@ namespace Coco {
 		return _canDrawMesh;
 	}
 	void Mesh::RenderMesh() {
-		_renderer->UpdateMVP(matrix.model, _uniformModel, _uniformView, _uniformProjection);
-		_renderer->DrawMesh(indexCount, VAO, VBO, IBO, _affectedByLight);
+		if (_canDrawMesh) {
+			_renderer->UpdateMVP(matrix.model, _uniformModel, _uniformView, _uniformProjection);
+			_renderer->DrawMesh(indexCount, VAO, VBO, IBO, _affectedByLight);
+		}
 	}
 
 	void Mesh::ClearMesh() {
@@ -206,6 +208,9 @@ namespace Coco {
 		_minColl = (_minCollConst * transform.scale) + transform.position;
 		_maxColl = (_maxCollConst * transform.scale) + transform.position;
 
+		_minCollTotal = (_minCollTotalConst * transform.scale) + transform.position;
+		_maxCollTotal = (_maxCollTotalConst * transform.scale) + transform.position;
+
 		for (int i = 0; i < _meshSons.size(); i++)
 			_meshSons[i]->UpdateSonsPos();
 
@@ -268,6 +273,9 @@ namespace Coco {
 		_minColl = (_minCollConst * transform.scale) + transform.position;
 		_maxColl = (_maxCollConst * transform.scale) + transform.position;
 
+		_minCollTotal = (_minCollTotalConst * transform.scale) + transform.position;
+		_maxCollTotal = (_maxCollTotalConst * transform.scale) + transform.position;
+
 		for (int i = 0; i < _meshSons.size(); i++)
 			_meshSons[i]->UpdateSonsScale();
 
@@ -309,10 +317,12 @@ namespace Coco {
 
 	void Mesh::SetMinColl(glm::vec3 value) {
 		_minCollConst = value;
+		_minColl = (_minCollConst * transform.scale) + transform.position;
 	}
 
 	void Mesh::SetMaxColl(glm::vec3 value) {
 		_maxCollConst = value;
+		_maxColl = (_maxCollConst * transform.scale) + transform.position;
 	}
 
 	glm::vec3 Mesh::GetMinColl() {
@@ -323,10 +333,25 @@ namespace Coco {
 		return _maxColl;
 	}
 
-	void Mesh::SetMeshAndSonsCanDraw(Mesh* mesh, bool value) {
-		for (int i = 0; i < mesh->GetMeshesSons().size(); i++) {
-			mesh->SetCanDrawMesh(value);
-			mesh->SetMeshAndSonsCanDraw(mesh->GetMeshesSons()[i], value);
-		}
+	void Mesh::SetMinCollGeneral(glm::vec3 value) {
+		_minCollTotalConst = value;
+		_minCollTotal = (_minCollTotalConst * transform.scale) + transform.position;
+	}
+	void Mesh::SetMaxCollGeneral(glm::vec3 value) {
+		_maxCollTotalConst = value;
+		_maxCollTotal = (_maxCollTotalConst * transform.scale) + transform.position;
+	}
+	glm::vec3 Mesh::GetMinCollGeneral() {
+		return _minCollTotal;
+	}
+	glm::vec3 Mesh::GetMaxCollGeneral() {
+		return _maxCollTotal;
+	}
+
+	void Mesh::StopDrawMeshAndSons(Mesh* mesh) {
+		mesh->SetCanDrawMesh(false);
+		if(mesh->GetIsParent())
+			for (int i = 0; i < mesh->GetMeshesSons().size();i++) 
+				StopDrawMeshAndSons(mesh->GetMeshesSons()[i]);
 	}
 }

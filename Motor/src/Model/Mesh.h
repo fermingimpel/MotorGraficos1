@@ -24,6 +24,11 @@ namespace Coco {
 		glm::vec3 _minColl;
 		glm::vec3 _maxCollConst;
 		glm::vec3 _maxColl;
+
+		glm::vec3 _minCollTotalConst;
+		glm::vec3 _minCollTotal;
+		glm::vec3 _maxCollTotal;
+		glm::vec3 _maxCollTotalConst;
 	public:
 		Mesh(Renderer* rend);
 		~Mesh();
@@ -64,7 +69,12 @@ namespace Coco {
 		glm::vec3 GetMinColl();
 		glm::vec3 GetMaxColl();
 
-		void SetMeshAndSonsCanDraw(Mesh* mesh, bool value);
+		void SetMinCollGeneral(glm::vec3 value);
+		void SetMaxCollGeneral(glm::vec3 value);
+		glm::vec3 GetMinCollGeneral();
+		glm::vec3 GetMaxCollGeneral();
+
+		void StopDrawMeshAndSons(Mesh* mesh);
 	};
 
 }

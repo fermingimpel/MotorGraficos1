@@ -39,6 +39,7 @@ namespace Coco {
 		_meshesToTex = modelImporter->GetMeshToTex();
 		_texturesList = modelImporter->GetTexturesList();
 		delete modelImporter;
+		SetColls(_meshList[0]);
 	}
 
 	void Model::LoadModel(std::string fileName, std::string texturesLocation, std::string nameTexture) {
@@ -48,6 +49,7 @@ namespace Coco {
 		_meshesToTex = modelImporter->GetMeshToTex();
 		_texturesList = modelImporter->GetTexturesList();
 		delete modelImporter;
+		SetColls(_meshList[0]);
 	}
 
 	void Model::DrawModel() {
@@ -58,6 +60,7 @@ namespace Coco {
 
 		for (int i = 0; i < _meshList.size(); i++) 
 			if (_meshList[i]->GetCanDrawMesh()) {
+				//std::cout << _meshList[i]->GetName() << " can draw: " << _meshList[i]->GetCanDrawMesh() << std::endl << std::endl;
 				uint materialIndex = _meshesToTex[i];
 				if (materialIndex < _texturesList.size() && _texturesList[materialIndex])
 					_texturesList[materialIndex]->UseTexture();
@@ -192,5 +195,35 @@ namespace Coco {
 
 	std::vector<Mesh*> Model::GetMeshes() {
 		return _meshList;
+	}
+	void Model::SetColls(Mesh* mesh) {
+		//float minX = mesh->GetMinColl().x, minY = mesh->GetMinColl().y, minZ = mesh->GetMinColl().z, maxX = mesh->GetMaxColl().x, maxY = mesh->GetMaxColl().y, maxZ = mesh->GetMaxColl().z;
+		//for (int i = 0; i < mesh->GetMeshesSons().size(); i++) 
+		//	if(mesh->GetIsParent())
+		//		SetColls(mesh->GetMeshesSons()[i]);
+		//
+		//
+		//for (int i = 0; i < mesh->GetMeshesSons().size(); i++) {
+		//	if (mesh->GetMeshesSons()[i]->GetMinColl().x < minX)
+		//		minX = mesh->GetMeshesSons()[i]->GetMinColl().x;
+		//	if (mesh->GetMeshesSons()[i]->GetMinColl().y < minY)
+		//		minY = mesh->GetMeshesSons()[i]->GetMinColl().y;
+		//	if (mesh->GetMeshesSons()[i]->GetMinColl().z < minZ)
+		//		minZ = mesh->GetMeshesSons()[i]->GetMinColl().z;
+		//	if (mesh->GetMeshesSons()[i]->GetMaxColl().x > maxX)
+		//		maxX = mesh->GetMeshesSons()[i]->GetMaxColl().x;
+		//	if (mesh->GetMeshesSons()[i]->GetMaxColl().y > maxY)
+		//		maxY = mesh->GetMeshesSons()[i]->GetMaxColl().y;
+		//	if (mesh->GetMeshesSons()[i]->GetMaxColl().z > maxZ)
+		//		maxZ = mesh->GetMeshesSons()[i]->GetMaxColl().z;
+		//}
+		//
+		//mesh->SetMaxCollGeneral(glm::vec3(maxX, maxY, maxZ));
+		//mesh->SetMinCollGeneral(glm::vec3(minX, minY, minZ));
+
+		//std::cout << "mesh name: " << mesh->GetName() << std::endl;
+		//std::cout << "min x: " << minX << " y: " << minY << " z: " << minZ << std::endl;
+		//std::cout << "max x: " << maxX << " y: " << maxY << " z: " << maxZ << std::endl;
+		//std::cout << std::endl;
 	}
 }

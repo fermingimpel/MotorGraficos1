@@ -25,6 +25,12 @@ namespace Coco {
 
 		bool _usingOriginalMaterial;
 		Material* _material;
+
+		glm::vec3 _minCollGeneralModelConst;
+		glm::vec3 _minCollGeneralModel;
+		glm::vec3 _maxCollGeneralModelConst;
+		glm::vec3 _maxCollGeneralModel;
+
 	public:
 		Model(Renderer* rend);
 		~Model();
@@ -58,6 +64,7 @@ namespace Coco {
 		void SetMeshScale(float x, float y, float z		,int indexMesh);
 
 		std::vector<Mesh*> GetMeshes();
+		void SetColls(Mesh* mesh);
 	};
 
 }

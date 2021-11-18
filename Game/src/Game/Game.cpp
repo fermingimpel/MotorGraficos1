@@ -92,7 +92,7 @@ namespace Coco {
 #pragma region Model2
 		_model2 = new Model(GetRenderer());
 		_model2->LoadModel("res/models/body.fbx", "res/textures/", "img1.jpg");
-		_model2->SetScale(0.1, 0.1, 0.1);
+		_model2->SetScale(0.1,0.1,0.1);
 		_model2->SetRotations(-90, 0, 0);
 
 		_model2->SetMeshPos(0, 0.33, 0, 1);
@@ -102,10 +102,15 @@ namespace Coco {
 		_model2->SetMeshPos(-0.15, 0, 0, 5);
 		_model2->SetMeshPos(-0.15, 0, 0, 6);
 		_model2->SetMeshPos(0, -0.175, 0, 7);
-		_model2->SetMeshPos(-0.05, -0.175, 0, 8);
+		_model2->SetMeshPos(-0.05, -0.15, 0, 8);
 		_model2->SetMeshPos(0, -0.1, -0.05, 9);
-		_model2->SetMeshPos(0.05, -0.175, 0, 10);
+		_model2->SetMeshPos(0.05, -0.15, 0, 10);
 		_model2->SetMeshPos(0, -0.1, -0.05, 11);
+		_model2->SetPos(0, 0, 2);
+
+		std::cout << std::endl;
+		std::cout<<" - - - base colls - - - "<<std::endl;
+		std::cout << std::endl;
 
 		for (int i = 0; i < _model2->GetMeshes().size(); i++) {
 			std::cout << "name: " << _model2->GetMeshes()[i]->GetName() << std::endl;
@@ -114,7 +119,17 @@ namespace Coco {
 			std::cout << std::endl;
 		}
 
-		_model2->SetPos(0, 0, 2);
+	//	std::cout << std::endl;
+	//	std::cout << " - - - general colls - - - " << std::endl;
+	//	std::cout << std::endl;
+	//
+	//	for (int i = 0; i < _model2->GetMeshes().size(); i++) {
+	//		std::cout << "mesh name: " << _model2->GetMeshes()[i]->GetName() << std::endl;
+	//		std::cout << "min x: " << _model2->GetMeshes()[i]->GetMinCollGeneral().x << " y: " << _model2->GetMeshes()[i]->GetMinCollGeneral().y << " z: " << _model2->GetMeshes()[i]->GetMinCollGeneral().z << std::endl;
+	//		std::cout << "max x: " << _model2->GetMeshes()[i]->GetMaxCollGeneral().x << " y: " << _model2->GetMeshes()[i]->GetMaxCollGeneral().y << " z: " << _model2->GetMeshes()[i]->GetMaxCollGeneral().z << std::endl;
+	//		std::cout << std::endl;
+	//	}
+
 #pragma endregion
 
 		BSP = new BSPlane();
@@ -140,7 +155,7 @@ namespace Coco {
 		_planeBack->SetRotations(0, 0, 0);
 		BSP->AddPlane(_planeBack, glm::vec3(0,0,0), glm::vec3(0,180,0));
 
-		//BSP->AddModelToCheck(_model1);
+		BSP->AddModelToCheck(_model1);
 		BSP->AddModelToCheck(_model2);
 	}
 	void Game::Play() {
@@ -255,16 +270,20 @@ namespace Coco {
 		//		std::cout << std::endl;
 		//	}
 		//}
-
-		BSP->BSPMagic();
-		BSP->CheckPlaneCamera(_camera);
+		
+		timerToPrint += deltaTime;
+		if (timerToPrint >= 0.33f) {
+			timerToPrint = 0;
+			system("cls");
+			BSP->BSPMagic();
+			BSP->CheckPlaneCamera(_camera);
+		}
 
 		_camera->LookAt(_camera->transform.position + _camera->transform.forward);
 
 		_camera->UseCamera();
 		GetRenderer()->SetView(_camera->GetViewMatrix());
 		GetLightManager()->UseLights();
-
 		_model1->DrawModel();
 		_model2->DrawModel();
 		BSP->DrawPlanes();
