@@ -354,4 +354,37 @@ namespace Coco {
 			for (int i = 0; i < mesh->GetMeshesSons().size();i++) 
 				StopDrawMeshAndSons(mesh->GetMeshesSons()[i]);
 	}
+
+	void Mesh::SetGeneralColls(Mesh* mesh) {
+		float minX = mesh->GetMinColl().x, minY = mesh->GetMinColl().y, minZ = mesh->GetMinColl().z, maxX = mesh->GetMaxColl().x, maxY = mesh->GetMaxColl().y, maxZ = mesh->GetMaxColl().z;
+		mesh->SetMinCollGeneral(glm::vec3(minX, minY, minZ));
+		mesh->SetMaxCollGeneral(glm::vec3(maxX, maxY, minZ));
+
+		for (int i = 0; i < mesh->GetMeshesSons().size(); i++)
+			SetGeneralColls(mesh->GetMeshesSons()[i]);
+
+		for (int i = 0; i < mesh->GetMeshesSons().size(); i++) {
+			if (mesh->GetMeshesSons()[i]->GetMinCollGeneral().x <= minX)
+				minX = mesh->GetMeshesSons()[i]->GetMinCollGeneral().x;
+			if (mesh->GetMeshesSons()[i]->GetMinCollGeneral().y <= minY)
+				minY = mesh->GetMeshesSons()[i]->GetMinCollGeneral().y;
+			if (mesh->GetMeshesSons()[i]->GetMinCollGeneral().z <= minZ)
+				minZ = mesh->GetMeshesSons()[i]->GetMinCollGeneral().z;
+
+			if (mesh->GetMeshesSons()[i]->GetMaxCollGeneral().x >= maxX)
+				maxX = mesh->GetMeshesSons()[i]->GetMaxCollGeneral().x;
+			if (mesh->GetMeshesSons()[i]->GetMaxCollGeneral().y >= maxY)
+				maxY = mesh->GetMeshesSons()[i]->GetMaxCollGeneral().y;
+			if (mesh->GetMeshesSons()[i]->GetMaxCollGeneral().z >= maxZ)
+				maxZ = mesh->GetMeshesSons()[i]->GetMaxCollGeneral().z;
+		}
+
+		mesh->SetMinCollGeneral(glm::vec3(minX, minY, minZ));
+		mesh->SetMaxCollGeneral(glm::vec3(maxX, maxY, minZ));
+
+		std::cout << "mesh name: " << mesh->GetName() << std::endl;
+		std::cout << "min x: " << minX << " y: " << minY << " z: " << minZ << std::endl;
+		std::cout << "max x: " << maxX << " y: " << maxY << " z: " << maxZ << std::endl;
+		std::cout << std::endl;
+	}
 }

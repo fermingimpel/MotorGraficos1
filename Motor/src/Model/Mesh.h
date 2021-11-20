@@ -75,6 +75,7 @@ namespace Coco {
 		glm::vec3 GetMaxCollGeneral();
 
 		void StopDrawMeshAndSons(Mesh* mesh);
+		void SetGeneralColls(Mesh* mesh);
 	};
 
 }

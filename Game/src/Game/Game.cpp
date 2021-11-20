@@ -81,7 +81,7 @@ namespace Coco {
 		_model1 = new Model(GetRenderer());
 		_model1->LoadModel("res/models/cube.fbx", "res/textures/", "pato.jpg");
 		_model1->SetPos(0, 0, 2);
-		_model1->SetScale(0.1, 0.1, 0.1);
+		_model1->SetScale(0.05, 0.05, 0.05);
 		//for (int i = 0; i < _model1->GetMeshes().size(); i++) {
 		//	std::cout << "name:" << _model1->GetMeshes()[i]->GetName() << std::endl;
 		//	std::cout << "min coll: x: " << _model1->GetMeshes()[i]->GetMinColl().x << " y: " << _model1->GetMeshes()[i]->GetMinColl().y << " z: " << _model1->GetMeshes()[i]->GetMinColl().z << std::endl;
@@ -93,7 +93,7 @@ namespace Coco {
 		_model2 = new Model(GetRenderer());
 		_model2->LoadModel("res/models/body.fbx", "res/textures/", "img1.jpg");
 		_model2->SetScale(0.1,0.1,0.1);
-		_model2->SetRotations(-90, 0, 0);
+		//_model2->SetRotations(0, 180, 0);
 
 		_model2->SetMeshPos(0, 0.33, 0, 1);
 		_model2->SetMeshPos(0, -0.2, 0, 2);
@@ -107,28 +107,38 @@ namespace Coco {
 		_model2->SetMeshPos(0.05, -0.15, 0, 10);
 		_model2->SetMeshPos(0, -0.1, -0.05, 11);
 		_model2->SetPos(0, 0, 2);
+		_model2->GetMeshes()[0]->SetGeneralColls(_model2->GetMeshes()[0]);
 
-		std::cout << std::endl;
-		std::cout<<" - - - base colls - - - "<<std::endl;
-		std::cout << std::endl;
+		//std::cout << std::endl;
+		//std::cout<<" - - - base colls - - - "<<std::endl;
+		//std::cout << std::endl;
+		//
+		// 
+		//for (int i = 0; i < _model2->GetMeshes().size(); i++) {
+		//	std::cout << std::endl;
+		//	std::cout << "name: " << _model2->GetMeshes()[i]->GetName() << std::endl;
+		//	std::cout << "min coll: x: " << _model2->GetMeshes()[i]->GetMinColl().x << " y: " << _model2->GetMeshes()[i]->GetMinColl().y << " z: " << _model2->GetMeshes()[i]->GetMinColl().z << std::endl;
+		//	std::cout << "max coll: x: " << _model2->GetMeshes()[i]->GetMaxColl().x << " y: " << _model2->GetMeshes()[i]->GetMaxColl().y << " z: " << _model2->GetMeshes()[i]->GetMaxColl().z << std::endl;
+		//	std::cout << "min general x: " << _model2->GetMeshes()[i]->GetMinCollGeneral().x << " y: " << _model2->GetMeshes()[i]->GetMinCollGeneral().y << " z: " << _model2->GetMeshes()[i]->GetMinCollGeneral().z << std::endl;
+		//	std::cout << "max general x: " << _model2->GetMeshes()[i]->GetMaxCollGeneral().x << " y: " << _model2->GetMeshes()[i]->GetMaxCollGeneral().y << " z: " << _model2->GetMeshes()[i]->GetMaxCollGeneral().z << std::endl;
+		//	std::cout << std::endl;
+		//}
 
-		for (int i = 0; i < _model2->GetMeshes().size(); i++) {
-			std::cout << "name: " << _model2->GetMeshes()[i]->GetName() << std::endl;
-			std::cout << "min coll: x: " << _model2->GetMeshes()[i]->GetMinColl().x << " y: " << _model2->GetMeshes()[i]->GetMinColl().y << " z: " << _model2->GetMeshes()[i]->GetMinColl().z << std::endl;
-			std::cout << "max coll: x: " << _model2->GetMeshes()[i]->GetMaxColl().x << " y: " << _model2->GetMeshes()[i]->GetMaxColl().y << " z: " << _model2->GetMeshes()[i]->GetMaxColl().z << std::endl;
-			std::cout << std::endl;
-		}
+		//std::cout << std::endl;
+		//std::cout << " - - - general colls - - - " << std::endl;
+		//std::cout << std::endl;
+	
+		//std::cout << "mesh name: " << _model2->GetMeshes()[2]->GetName() << std::endl;
+		//std::cout << "min x: " << _model2->GetMeshes()[2]->GetMinCollGeneral().x << " y: " << _model2->GetMeshes()[2]->GetMinCollGeneral().y << " z: " << _model2->GetMeshes()[2]->GetMinCollGeneral().z << std::endl;
+		//std::cout << "max x: " << _model2->GetMeshes()[2]->GetMaxCollGeneral().x << " y: " << _model2->GetMeshes()[2]->GetMaxCollGeneral().y << " z: " << _model2->GetMeshes()[2]->GetMaxCollGeneral().z << std::endl;
+		//std::cout << std::endl;
 
-	//	std::cout << std::endl;
-	//	std::cout << " - - - general colls - - - " << std::endl;
-	//	std::cout << std::endl;
-	//
-	//	for (int i = 0; i < _model2->GetMeshes().size(); i++) {
-	//		std::cout << "mesh name: " << _model2->GetMeshes()[i]->GetName() << std::endl;
-	//		std::cout << "min x: " << _model2->GetMeshes()[i]->GetMinCollGeneral().x << " y: " << _model2->GetMeshes()[i]->GetMinCollGeneral().y << " z: " << _model2->GetMeshes()[i]->GetMinCollGeneral().z << std::endl;
-	//		std::cout << "max x: " << _model2->GetMeshes()[i]->GetMaxCollGeneral().x << " y: " << _model2->GetMeshes()[i]->GetMaxCollGeneral().y << " z: " << _model2->GetMeshes()[i]->GetMaxCollGeneral().z << std::endl;
-	//		std::cout << std::endl;
-	//	}
+		//for (int i = 0; i < _model2->GetMeshes().size(); i++) {
+		//	std::cout << "mesh name: " << _model2->GetMeshes()[i]->GetName() << std::endl;
+		//	std::cout << "min x: " << _model2->GetMeshes()[i]->GetMinCollGeneral().x << " y: " << _model2->GetMeshes()[i]->GetMinCollGeneral().y << " z: " << _model2->GetMeshes()[i]->GetMinCollGeneral().z << std::endl;
+		//	std::cout << "max x: " << _model2->GetMeshes()[i]->GetMaxCollGeneral().x << " y: " << _model2->GetMeshes()[i]->GetMaxCollGeneral().y << " z: " << _model2->GetMeshes()[i]->GetMaxCollGeneral().z << std::endl;
+		//	std::cout << std::endl;
+		//}
 
 #pragma endregion
 
@@ -136,26 +146,26 @@ namespace Coco {
 
 		_planeLeft = new Model(GetRenderer());
 		_planeLeft->LoadModel("res/models/plane.fbx", "res/textures/", "theolean.jpg");
-		_planeLeft->SetScale(0.1, 0.1, 0.1);
+		_planeLeft->SetScale(0.1, 0.1, 0.05);
 		_planeLeft->SetPos(1, 0, 2);
 		_planeLeft->SetRotations(0, -90, 0);
 		BSP->AddPlane(_planeLeft, glm::vec3(0,-90,0), glm::vec3(0,90,0));
 
 		_planeDown = new Model(GetRenderer());
 		_planeDown->LoadModel("res/models/plane.fbx", "res/textures/", "theolean.jpg");
-		_planeDown->SetScale(0.1, 0.1, 0.1);
+		_planeDown->SetScale(0.1, 0.1, 0.05);
 		_planeDown->SetPos(0, -1, 2);
 		_planeDown->SetRotations(-90, 0, 0);
 		BSP->AddPlane(_planeDown, glm::vec3(-90,0,0), glm::vec3(90,0,0));
 
 		_planeBack = new Model(GetRenderer());
 		_planeBack->LoadModel("res/models/plane.fbx", "res/textures/", "theolean.jpg");
-		_planeBack->SetScale(0.1, 0.1, 0.1);
+		_planeBack->SetScale(0.1, 0.1, 0.05);
 		_planeBack->SetPos(0, 0, 3);
-		_planeBack->SetRotations(0, 0, 0);
+		_planeBack->SetRotations(0, 180, 0);
 		BSP->AddPlane(_planeBack, glm::vec3(0,0,0), glm::vec3(0,180,0));
 
-		BSP->AddModelToCheck(_model1);
+		//BSP->AddModelToCheck(_model1);
 		BSP->AddModelToCheck(_model2);
 	}
 	void Game::Play() {
@@ -178,6 +188,8 @@ namespace Coco {
 	float posZModel = 2.0f;
 
 	float timerToPrint = 0.0f;
+
+	float posXCube = 0.0f;
 
 	void Game::Update(float deltaTime) {
 		GetWindow()->ClearWindow(0.15f, 0.15f, 0.15f, 1.0f);
@@ -235,6 +247,13 @@ namespace Coco {
 			posZModel -= deltaTime * speedPosModel;
 
 		_model2->SetPos(posXModel, posYModel, posZModel);
+		
+		if (Input::GetKey(Keycode::Z))
+			posXCube += deltaTime * speedPosModel;
+		else if (Input::GetKey(Keycode::X))
+			posXCube -= deltaTime * speedPosModel;
+
+		_model1->SetPos(posXCube, 0, 2);
 
 		//for (int i = 0; i < _model2->GetMeshes().size(); i++) {
 		//	std::cout << "name: " << _model2->GetMeshes()[i]->GetName() << std::endl;
@@ -271,13 +290,13 @@ namespace Coco {
 		//	}
 		//}
 		
-		timerToPrint += deltaTime;
-		if (timerToPrint >= 0.33f) {
-			timerToPrint = 0;
-			system("cls");
-			BSP->BSPMagic();
-			BSP->CheckPlaneCamera(_camera);
-		}
+	timerToPrint += deltaTime;
+	if (timerToPrint >= 1) {
+		timerToPrint = 0;
+		system("cls");
+		BSP->CheckPlaneCamera(_camera);
+		BSP->BSPMagic();
+	}
 
 		_camera->LookAt(_camera->transform.position + _camera->transform.forward);
 

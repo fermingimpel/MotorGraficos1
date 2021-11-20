@@ -14,36 +14,55 @@ namespace Coco {
 
 	void BSPlane::BSPMagic() {
 		for (int i = 0; i < _objects.size(); i++)
-			CheckObjectBSP(_objects[i]->GetMeshes()[0]);
+			CheckObjectBSP(_objects[i]->GetMeshes()[0], true);
 	}
 
-	void BSPlane::CheckObjectBSP(Mesh* mesh) {
-		bool checkPassed = true;
-		for (int i = 0; i < _planes.size(); i++) {
-			glm::vec3 dirA = glm::normalize(mesh->GetMinColl() - _planes[i].model->transform.position);
-			float dotProdA = glm::dot(dirA, _planes[i].model->transform.forward);
+	void BSPlane::CheckObjectBSP(Mesh* mesh, bool isRoot) {
+		if (!isRoot) {
+			bool checkPassed = true;
 
-			glm::vec3 dirB = glm::normalize(mesh->GetMaxColl() - _planes[i].model->transform.position);
-			float dotProdB = glm::dot(dirB, _planes[i].model->transform.forward);
+			for (int i = 0; i < _planes.size(); i++) {
+				glm::vec3 dirA = glm::normalize(mesh->GetMinCollGeneral() - _planes[i].model->transform.position);
+				float dotProdA = glm::dot(dirA, _planes[i].model->transform.forward);
 
-			if (dotProdA < 0.0f && dotProdB < 0.0f) {
-				checkPassed = false;
-				break;
+				glm::vec3 dirB = glm::normalize(mesh->GetMaxCollGeneral() - _planes[i].model->transform.position);
+				float dotProdB = glm::dot(dirB, _planes[i].model->transform.forward);
+
+				if (dotProdA < 0.0f && dotProdB < 0.0f) {
+					checkPassed = false;
+					break;
+				}
 			}
-		}
-	
-		if (!checkPassed) {
-			mesh->SetCanDrawMesh(false);
-			mesh->StopDrawMeshAndSons(mesh);
-			return;
-		}
 
-		mesh->SetCanDrawMesh(true);
+			if (!checkPassed) {
+				mesh->SetCanDrawMesh(false);
+				mesh->StopDrawMeshAndSons(mesh);
+				return;
+			}
+
+
+			for (int i = 0; i < _planes.size(); i++) {
+				glm::vec3 dirA = glm::normalize(mesh->GetMinColl() - _planes[i].model->transform.position);
+				float dotProdA = glm::dot(dirA, _planes[i].model->transform.forward);
+
+				glm::vec3 dirB = glm::normalize(mesh->GetMaxColl() - _planes[i].model->transform.position);
+				float dotProdB = glm::dot(dirB, _planes[i].model->transform.forward);
+				if (dotProdA < 0.0f && dotProdB < 0.0f) {
+					checkPassed = false;
+					break;
+				}
+			}
+
+			if (!checkPassed)
+				mesh->SetCanDrawMesh(false);
+			else
+				mesh->SetCanDrawMesh(true);
+		}
 
 		for (int i = 0; i < mesh->GetMeshesSons().size(); i++) {
-			CheckObjectBSP(mesh->GetMeshesSons()[i]);
+			std::cout << "mesh parent: " << mesh->GetName() << " - mesh son to check: " << mesh->GetMeshesSons()[i]->GetName() << std::endl;
+			CheckObjectBSP(mesh->GetMeshesSons()[i],false);
 		}
-
 	}
 
 	void BSPlane::CheckPlaneCamera(Camera* camera) {

@@ -16,13 +16,12 @@ namespace Coco {
 		};
 		std::vector<Plane> _planes;
 		std::vector<Model*> _objects;
-		bool IsObjectIsOnPlane(Mesh* mesh);
 	public:
 		BSPlane();
 		~BSPlane();
 
 		void BSPMagic();
-		void CheckObjectBSP(Mesh* mesh);
+		void CheckObjectBSP(Mesh* mesh, bool isRoot);
 		void CheckPlaneCamera(Camera* camera);
 		void AddPlane(Model* model, glm::vec3 angleLookA, glm::vec3 angleLookB);
 		void AddModelToCheck(Model* object);

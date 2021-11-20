@@ -64,7 +64,6 @@ namespace Coco {
 		void SetMeshScale(float x, float y, float z		,int indexMesh);
 
 		std::vector<Mesh*> GetMeshes();
-		void SetColls(Mesh* mesh);
 	};
 
 }
