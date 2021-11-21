@@ -25,10 +25,15 @@ namespace Coco {
 		_canDrawMesh = true;
 
 
-		_minCollConst = glm::vec3(0, 0, 0);
-		_minColl = glm::vec3(0, 0, 0);
-		_maxCollConst = glm::vec3(0, 0, 0);
-		_maxColl = glm::vec3(0, 0, 0);
+		_minCollConst = glm::vec3(999, 999, 999);
+		_minColl = glm::vec3(999, 999, 999);
+		_maxCollConst = glm::vec3(-999, -999, -999);
+		_maxColl = glm::vec3(-999, -999, -999);
+
+		_minCollTotalConst	= glm::vec3(999, 999, 999);
+		_minCollTotal		= glm::vec3(999, 999, 999);
+		_maxCollTotalConst	= glm::vec3(-999, -999, -999);
+		_maxCollTotal		= glm::vec3(-999, -999, -999);
 	}
 
 
@@ -273,8 +278,8 @@ namespace Coco {
 		_minColl = (_minCollConst * transform.scale) + transform.position;
 		_maxColl = (_maxCollConst * transform.scale) + transform.position;
 
-		_minCollTotal = (_minCollTotalConst * transform.scale) + transform.position;
-		_maxCollTotal = (_maxCollTotalConst * transform.scale) + transform.position;
+		_minCollTotal = (_minCollTotalConst * transform.scale)+ transform.position;
+		_maxCollTotal = (_maxCollTotalConst * transform.scale)+ transform.position;
 
 		for (int i = 0; i < _meshSons.size(); i++)
 			_meshSons[i]->UpdateSonsScale();
@@ -308,6 +313,9 @@ namespace Coco {
 	aiNode* Mesh::GetNode() {
 		return _node;
 	}
+	Mesh* Mesh::GetParent() {
+		return _meshParent;
+	}
 	std::string Mesh::GetName() {
 		return _name;
 	}
@@ -323,6 +331,13 @@ namespace Coco {
 	void Mesh::SetMaxColl(glm::vec3 value) {
 		_maxCollConst = value;
 		_maxColl = (_maxCollConst * transform.scale) + transform.position;
+	}
+
+	glm::vec3 Mesh::GetMinCollTotal() {
+		return _minCollConst;
+	}
+	glm::vec3 Mesh::GetMaxCollTotal() {
+		return _maxCollConst;
 	}
 
 	glm::vec3 Mesh::GetMinColl() {
@@ -356,35 +371,37 @@ namespace Coco {
 	}
 
 	void Mesh::SetGeneralColls(Mesh* mesh) {
-		float minX = mesh->GetMinColl().x, minY = mesh->GetMinColl().y, minZ = mesh->GetMinColl().z, maxX = mesh->GetMaxColl().x, maxY = mesh->GetMaxColl().y, maxZ = mesh->GetMaxColl().z;
+		float minX = mesh->GetMinCollTotal().x, minY = mesh->GetMinCollTotal().y, minZ = mesh->GetMinCollTotal().z, maxX = mesh->GetMaxCollTotal().x, maxY = mesh->GetMaxCollTotal().y, maxZ = mesh->GetMaxCollTotal().z;
 		mesh->SetMinCollGeneral(glm::vec3(minX, minY, minZ));
-		mesh->SetMaxCollGeneral(glm::vec3(maxX, maxY, minZ));
+		mesh->SetMaxCollGeneral(glm::vec3(maxX, maxY, maxZ));
 
 		for (int i = 0; i < mesh->GetMeshesSons().size(); i++)
 			SetGeneralColls(mesh->GetMeshesSons()[i]);
 
-		for (int i = 0; i < mesh->GetMeshesSons().size(); i++) {
-			if (mesh->GetMeshesSons()[i]->GetMinCollGeneral().x <= minX)
-				minX = mesh->GetMeshesSons()[i]->GetMinCollGeneral().x;
-			if (mesh->GetMeshesSons()[i]->GetMinCollGeneral().y <= minY)
-				minY = mesh->GetMeshesSons()[i]->GetMinCollGeneral().y;
-			if (mesh->GetMeshesSons()[i]->GetMinCollGeneral().z <= minZ)
-				minZ = mesh->GetMeshesSons()[i]->GetMinCollGeneral().z;
 
-			if (mesh->GetMeshesSons()[i]->GetMaxCollGeneral().x >= maxX)
-				maxX = mesh->GetMeshesSons()[i]->GetMaxCollGeneral().x;
-			if (mesh->GetMeshesSons()[i]->GetMaxCollGeneral().y >= maxY)
-				maxY = mesh->GetMeshesSons()[i]->GetMaxCollGeneral().y;
-			if (mesh->GetMeshesSons()[i]->GetMaxCollGeneral().z >= maxZ)
-				maxZ = mesh->GetMeshesSons()[i]->GetMaxCollGeneral().z;
-		}
+		if (mesh->GetParent() != NULL) 
+			mesh->TryChangeParentGeneralColls(mesh->GetParent(), mesh->GetMinCollGeneral(), mesh->GetMaxCollGeneral());
+		
+	}
+
+	void Mesh::TryChangeParentGeneralColls(Mesh* mesh, glm::vec3 min, glm::vec3 max) {
+		float minX = mesh->GetMinCollGeneral().x, minY = mesh->GetMinCollGeneral().y, minZ = mesh->GetMinCollGeneral().z, maxX = mesh->GetMaxCollGeneral().x, maxY = mesh->GetMaxCollGeneral().y, maxZ = mesh->GetMaxCollGeneral().z;
+
+		if (min.x <= maxX)
+			minX = min.x;
+		if (min.x <= minY)
+			minY = min.y;
+		if (min.x <= minZ)
+			minZ <= min.z;
+		if (max.x >= maxX)
+			maxX = max.x;
+		if (max.y >= maxY)
+			maxY = max.y;
+		if (max.z >= maxZ)
+			maxZ = max.z;
 
 		mesh->SetMinCollGeneral(glm::vec3(minX, minY, minZ));
 		mesh->SetMaxCollGeneral(glm::vec3(maxX, maxY, minZ));
-
-		std::cout << "mesh name: " << mesh->GetName() << std::endl;
-		std::cout << "min x: " << minX << " y: " << minY << " z: " << minZ << std::endl;
-		std::cout << "max x: " << maxX << " y: " << maxY << " z: " << maxZ << std::endl;
-		std::cout << std::endl;
 	}
+
 }

@@ -45,6 +45,7 @@ namespace Coco {
 		void SetParent(Mesh* parent);
 		bool GetIsParent();
 		aiNode* GetNode();
+		Mesh* GetParent();
 		std::string GetName();
 		std::vector<Mesh*> GetMeshesSons();
 
@@ -66,6 +67,8 @@ namespace Coco {
 
 		void SetMinColl(glm::vec3 value);
 		void SetMaxColl(glm::vec3 value);
+		glm::vec3 GetMinCollTotal();
+		glm::vec3 GetMaxCollTotal();
 		glm::vec3 GetMinColl();
 		glm::vec3 GetMaxColl();
 
@@ -76,6 +79,7 @@ namespace Coco {
 
 		void StopDrawMeshAndSons(Mesh* mesh);
 		void SetGeneralColls(Mesh* mesh);
+		void TryChangeParentGeneralColls(Mesh* mesh, glm::vec3 min, glm::vec3 max);
 	};
 
 }

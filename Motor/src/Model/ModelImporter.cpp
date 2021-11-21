@@ -61,6 +61,7 @@ namespace Coco {
 		_meshParentBase = new Mesh(_renderer);
 		_meshParentBase->CreateMesh(0, 0, 0, 0);
 		_meshParentBase->SetName(scene->mRootNode->mName.C_Str());
+		_meshParentBase->SetParent(NULL);
 		_meshList.push_back(_meshParentBase);
 		_meshParentBase->SetNode(scene->mRootNode);
 
