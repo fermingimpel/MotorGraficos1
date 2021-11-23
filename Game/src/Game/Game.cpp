@@ -85,21 +85,41 @@ namespace Coco {
 		
 #pragma region Model2
 		_model2 = new Model(GetRenderer());
-		_model2->LoadModel("res/models/body.fbx", "res/textures/", "theolean.jpg");
+		_model2->LoadModel("res/models/bodyna.fbx", "res/textures/", "img1.jpg");
 		_model2->SetScale(0.1,0.1,0.1);
-		_model2->SetRotations(180, 0, 0);
+		//_model2->SetRotations(180, 0, 0);
+		// 1 head, 2 body, 3 hip, 4 right leg, 5 right foot, 6 left leg, 7 left foot, 8 right arm, 9 right arm, 10 left arm, 11 left hand
+		_model2->SetMeshPos(0, 0.5, 0, 1); 
+		
+		_model2->SetMeshPos(0, -0.2, 0, 2); 
+		_model2->SetMeshScale(0.5, 1.33, 0.5, 2);
 
-		_model2->SetMeshPos(0, 0.33, 0, 1);
-		_model2->SetMeshPos(0, -0.2, 0, 2);
-		_model2->SetMeshPos(0.15, 0, 0, 3);
-		_model2->SetMeshPos(0.15, 0, 0, 4);
-		_model2->SetMeshPos(-0.15, 0, 0, 5);
-		_model2->SetMeshPos(-0.15, 0, 0, 6);
-		_model2->SetMeshPos(0, -0.175, 0, 7);
-		_model2->SetMeshPos(-0.05, -0.15, 0, 8);
-		_model2->SetMeshPos(0, -0.1, -0.05, 9);
-		_model2->SetMeshPos(0.05, -0.15, 0, 10);
-		_model2->SetMeshPos(0, -0.1, -0.05, 11);
+		_model2->SetMeshPos(0, -0.225, 0, 3);
+		_model2->SetMeshScale(1.5, 0.75, 1.5, 3);
+
+		_model2->SetMeshPos(-0.05, -0.2, 0, 4);
+		_model2->SetMeshScale(0.33, 1, 0.33, 4);
+
+		_model2->SetMeshPos(0, -0.15, -0.05, 5);
+		_model2->SetMeshScale(0.9, 0.6, 3, 5);
+
+		_model2->SetMeshPos(0.05, -0.2, 0, 6);
+		_model2->SetMeshScale(0.33, 1, 0.33, 6);
+
+		_model2->SetMeshPos(0, -0.15, -0.05, 7);
+		_model2->SetMeshScale(0.9, 0.6, 3, 7);
+
+		_model2->SetMeshPos(0.15, 0, 0, 8); 
+		_model2->SetMeshScale(3, 0.33, 0.5, 8);
+
+		_model2->SetMeshPos(0.2, 0.0, 0, 9);
+		_model2->SetMeshScale(0.33, 2, 2, 9);
+
+		_model2->SetMeshPos(-0.15, 0, 0, 10);
+		_model2->SetMeshScale(3, 0.33, 0.5, 10);
+
+		_model2->SetMeshPos(-0.2, 0, 0, 11);
+		_model2->SetMeshScale(0.33, 2, 2, 11);
 
 #pragma endregion
 
@@ -126,12 +146,12 @@ namespace Coco {
 		_planeBack->SetRotations(0, 180, 0);
 		BSP->AddPlane(_planeBack, glm::vec3(0,0,0), glm::vec3(0,180,0));
 
-		BSP->AddModelToCheck(_model1);
+		//BSP->AddModelToCheck(_model1);
 		BSP->AddModelToCheck(_model2);
 
 		std::cout << std::endl;
 		std::cout << "manito coll pos: x: " << _model2->GetMeshes()[4]->GetMaxColl().x << " y: " << _model2->GetMeshes()[4]->GetMaxColl().y << " z: " << _model2->GetMeshes()[4]->GetMaxColl().z << std::endl;
-		std::cout << "manito coll pos: x: " << _model2->GetMeshes()[4]->GetMaxCollGeneral().x << " y: " << _model2->GetMeshes()[4]->GetMaxCollGeneral().y << " z: " << _model2->GetMeshes()[4]->GetMaxCollGeneral().z << std::endl;
+		std::cout << "manito coll pos: x: " << _model2->GetMeshes()[4]->GetMinColl().x << " y: " << _model2->GetMeshes()[4]->GetMinColl().y << " z: " << _model2->GetMeshes()[4]->GetMinColl().z << std::endl;
 		std::cout << std::endl;
 	}
 	void Game::Play() {
@@ -212,31 +232,42 @@ namespace Coco {
 			posZModel -= deltaTime * speedPosModel;
 
 		_model2->SetPos(posXModel, posYModel, posZModel);
-		
+
 		if (Input::GetKey(Keycode::Z))
 			posXCube += deltaTime * speedPosModel;
 		else if (Input::GetKey(Keycode::X))
 			posXCube -= deltaTime * speedPosModel;
 
 
+
 		_model1->SetPos(posXCube, 0, 2);
 
-		timerToPrint += deltaTime;
-		if (timerToPrint >= 0.11) {
-			//_model2->GetMeshes()[0]->SetGeneralColls(_model2->GetMeshes()[0]);
+		//timerToPrint += deltaTime;
+		//if (timerToPrint >= 0.1) {
+		//	//system("cls");
+		//
+		//	//for (int i = 0; i < _model2->GetMeshes().size(); i++) {
+		//	//	std::cout << std::endl;
+		//	//	std::cout << "name: " << _model2->GetMeshes()[i]->GetName()<<" coll min pos: x: " << _model2->GetMeshes()[i]->GetMinColl().x << " y: " << _model2->GetMeshes()[i]->GetMinColl().y << " z: " << _model2->GetMeshes()[i]->GetMinColl().z << std::endl;
+		//	//	std::cout << "name: " << _model2->GetMeshes()[i]->GetName()<<" coll max pos: x: " << _model2->GetMeshes()[i]->GetMaxColl().x << " y: " << _model2->GetMeshes()[i]->GetMaxColl().y << " z: " << _model2->GetMeshes()[i]->GetMaxColl().z << std::endl;
+		//	//	std::cout << std::endl;
+		//	//}
+		//
+		//	//_model2->GetMeshes()[0]->SetGeneralColls(_model2->GetMeshes()[0]);
+		//	timerToPrint = 0;
+		//	BSP->CheckPlaneCamera(_camera);
+		//	BSP->BSPMagic();
+		//}
 
-			timerToPrint = 0;
-			//system("cls");
-			BSP->CheckPlaneCamera(_camera);
-			BSP->BSPMagic();
-		}
+		BSP->CheckPlaneCamera(_camera);
+		BSP->BSPMagic();
 
 		_camera->LookAt(_camera->transform.position + _camera->transform.forward);
 
 		_camera->UseCamera();
 		GetRenderer()->SetView(_camera->GetViewMatrix());
 		GetLightManager()->UseLights();
-		_model1->DrawModel();
+		//_model1->DrawModel();
 		_model2->DrawModel();
 		BSP->DrawPlanes();
 
