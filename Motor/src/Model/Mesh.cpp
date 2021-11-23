@@ -30,9 +30,7 @@ namespace Coco {
 		_maxCollConst = glm::vec3(-999, -999, -999);
 		_maxColl = glm::vec3(-999, -999, -999);
 
-		_minCollTotalConst	= glm::vec3(999, 999, 999);
 		_minCollTotal		= glm::vec3(999, 999, 999);
-		_maxCollTotalConst	= glm::vec3(-999, -999, -999);
 		_maxCollTotal		= glm::vec3(-999, -999, -999);
 	}
 
@@ -213,8 +211,10 @@ namespace Coco {
 		_minColl = (_minCollConst * transform.scale) + transform.position;
 		_maxColl = (_maxCollConst * transform.scale) + transform.position + (-_minCollConst * transform.scale);
 
-		_minCollTotal = (_minCollTotalConst * transform.scale) + transform.position;
-		_maxCollTotal = (_maxCollTotalConst * transform.scale) + transform.position;
+		if (!_isParent){
+			_minCollTotal = _minColl;
+			_maxCollTotal = _maxColl;
+		}
 
 		for (int i = 0; i < _meshSons.size(); i++)
 			_meshSons[i]->UpdateSonsPos();
@@ -278,8 +278,10 @@ namespace Coco {
 		_minColl = (_minCollConst * transform.scale) + transform.position;
 		_maxColl = (_maxCollConst * transform.scale) + transform.position + (-_minCollConst * transform.scale);
 
-		_minCollTotal = (_minCollTotalConst * transform.scale)+ transform.position;
-		_maxCollTotal = (_maxCollTotalConst * transform.scale)+ transform.position;
+		if (!_isParent) {
+			_minCollTotal = _minColl;
+			_maxCollTotal = _maxColl;
+		}
 
 		for (int i = 0; i < _meshSons.size(); i++)
 			_meshSons[i]->UpdateSonsScale();
@@ -349,12 +351,10 @@ namespace Coco {
 	}
 
 	void Mesh::SetMinCollGeneral(glm::vec3 value) {
-		_minCollTotalConst = value;
-		_minCollTotal = (_minCollTotalConst * transform.scale) + transform.position;
+		_minCollTotal = value;
 	}
 	void Mesh::SetMaxCollGeneral(glm::vec3 value) {
-		_maxCollTotalConst = value;
-		_maxCollTotal = (_maxCollTotalConst * transform.scale) + transform.position;
+		_maxCollTotal = value;
 	}
 	glm::vec3 Mesh::GetMinCollGeneral() {
 		return _minCollTotal;
@@ -371,54 +371,43 @@ namespace Coco {
 	}
 
 	void Mesh::SetGeneralColls(Mesh* mesh) {
-		float minX = mesh->GetMinCollTotal().x, minY = mesh->GetMinCollTotal().y, minZ = mesh->GetMinCollTotal().z, maxX = mesh->GetMaxCollTotal().x, maxY = mesh->GetMaxCollTotal().y, maxZ = mesh->GetMaxCollTotal().z;
+		float minX = mesh->GetMinColl().x, minY = mesh->GetMinColl().y, minZ = mesh->GetMinColl().z, maxX = mesh->GetMaxColl().x, maxY = mesh->GetMaxColl().y, maxZ = mesh->GetMaxColl().z;
 		mesh->SetMinCollGeneral(glm::vec3(minX, minY, minZ));
 		mesh->SetMaxCollGeneral(glm::vec3(maxX, maxY, maxZ));
 
 		for (int i = 0; i < mesh->GetMeshesSons().size(); i++)
 			SetGeneralColls(mesh->GetMeshesSons()[i]);
 
-
-		if (mesh->GetParent() != NULL) 
+		if (mesh->GetParent() != NULL)
 			mesh->TryChangeParentGeneralColls(mesh->GetParent());
-		
 	}
 
 	void Mesh::TryChangeParentGeneralColls(Mesh* mesh) {
-		float minX = mesh->GetMinCollTotal().x, minY = mesh->GetMinCollTotal().y, minZ = mesh->GetMinCollTotal().z, maxX = mesh->GetMaxCollTotal().x, maxY = mesh->GetMaxCollTotal().y, maxZ = mesh->GetMaxCollTotal().z;
-	//	int a = 999;
-	//	int b = 999;
+		float minX = mesh->GetMinColl().x, minY = mesh->GetMinColl().y, minZ = mesh->GetMinColl().z, maxX = mesh->GetMaxColl().x, maxY = mesh->GetMaxColl().y, maxZ = mesh->GetMaxColl().z;
 
 		for (int i = 0; i < mesh->GetMeshesSons().size(); i++) {
 			
-			if (mesh->GetMeshesSons()[i]->GetMinCollTotal().x <= minX)
-				minX = mesh->GetMeshesSons()[i]->GetMinCollTotal().x;
+			if (mesh->GetMeshesSons()[i]->GetMinColl().x <= minX)
+				minX = mesh->GetMeshesSons()[i]->GetMinColl().x;
 
-			if (mesh->GetMeshesSons()[i]->GetMinCollTotal().y <= minY)
-				minY = mesh->GetMeshesSons()[i]->GetMinCollTotal().y;
+			if (mesh->GetMeshesSons()[i]->GetMinColl().y <= minY)
+				minY = mesh->GetMeshesSons()[i]->GetMinColl().y;
 
-			if (mesh->GetMeshesSons()[i]->GetMinCollTotal().z <= minZ)
-				minZ = mesh->GetMeshesSons()[i]->GetMinCollTotal().z;
+			if (mesh->GetMeshesSons()[i]->GetMinColl().z <= minZ)
+				minZ = mesh->GetMeshesSons()[i]->GetMinColl().z;
 
-			if (mesh->GetMeshesSons()[i]->GetMaxCollTotal().x >= maxX)
-				maxX = mesh->GetMeshesSons()[i]->GetMaxCollTotal().x;
+			if (mesh->GetMeshesSons()[i]->GetMaxColl().x >= maxX)
+				maxX = mesh->GetMeshesSons()[i]->GetMaxColl().x;
 
-			if (mesh->GetMeshesSons()[i]->GetMaxCollTotal().y >= maxY)
-				maxY = mesh->GetMeshesSons()[i]->GetMaxCollTotal().y;
+			if (mesh->GetMeshesSons()[i]->GetMaxColl().y >= maxY)
+				maxY = mesh->GetMeshesSons()[i]->GetMaxColl().y;
 
-			if (mesh->GetMeshesSons()[i]->GetMaxCollTotal().z >= maxZ)
-				maxZ = mesh->GetMeshesSons()[i]->GetMaxCollTotal().z;
-		
+			if (mesh->GetMeshesSons()[i]->GetMaxColl().z >= maxZ)
+				maxZ = mesh->GetMeshesSons()[i]->GetMaxColl().z;
 		}
 
 		mesh->SetMinCollGeneral(glm::vec3(minX, minY, minZ));
-		mesh->SetMaxCollGeneral(glm::vec3(maxX, maxY, minZ));
-
-	//	std::cout << std::endl;
-	//	std::cout << "name: " << mesh->GetName() << std::endl;
-	//	std::cout << "min x: " << minX << " y: " << minY << " z: " << minZ << std::endl;
-	//	std::cout << "max x: " << maxX << " y: " << maxY << " z: " << maxZ << std::endl;
-	//	std::cout << std::endl;
+		mesh->SetMaxCollGeneral(glm::vec3(maxX, maxY, maxZ));
 	}
 
 }

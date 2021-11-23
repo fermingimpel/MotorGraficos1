@@ -25,10 +25,8 @@ namespace Coco {
 		glm::vec3 _maxCollConst;
 		glm::vec3 _maxColl;
 
-		glm::vec3 _minCollTotalConst;
 		glm::vec3 _minCollTotal;
 		glm::vec3 _maxCollTotal;
-		glm::vec3 _maxCollTotalConst;
 	public:
 		Mesh(Renderer* rend);
 		~Mesh();

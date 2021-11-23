@@ -20,37 +20,34 @@ namespace Coco {
 	void BSPlane::CheckObjectBSP(Mesh* mesh, bool isRoot) {
 		if (!isRoot) {
 			bool checkPassed = true;
-			//if (mesh->GetIsParent()) {
-			//	if (mesh->GetName() == "Right Arm") {
-			//		for (int i = 0; i < _planes.size(); i++) {
-			//			glm::vec3 dirA = glm::normalize(mesh->GetMinCollGeneral() - _planes[i].model->transform.position);
-			//			float dotProdA = glm::dot(dirA, _planes[i].model->transform.forward);
-			//
-			//			glm::vec3 dirB = glm::normalize(mesh->GetMaxCollGeneral() - _planes[i].model->transform.position);
-			//			float dotProdB = glm::dot(dirB, _planes[i].model->transform.forward);
-			//
-			//			if (i == 0) {
-			//				std::cout << std::endl;
-			//				std::cout << "dotprodA: " << dotProdA << std::endl;
-			//				std::cout << "dotprodB: " << dotProdB << std::endl;
-			//				std::cout << std::endl;
-			//			}
-			//
-			//			if (dotProdA < 0.0f && dotProdB < 0.0f) {
-			//				std::cout << "mesh : " << mesh->GetName() << " dont pass check!" << std::endl;
-			//				checkPassed = false;
-			//				break;
-			//			}
-			//		}
-			//
-			//		if (!checkPassed) {
-			//			mesh->SetCanDrawMesh(false);
-			//			mesh->StopDrawMeshAndSons(mesh);
-			//			return;
-			//		}
-			//	}
-			//}
+			if (mesh->GetIsParent()) {
+				for (int i = 0; i < _planes.size(); i++) {
+					glm::vec3 dirA = glm::normalize(mesh->GetMinCollGeneral() - _planes[i].model->transform.position);
+					float dotProdA = glm::dot(dirA, _planes[i].model->transform.forward);
 
+					glm::vec3 dirB = glm::normalize(mesh->GetMaxCollGeneral() - _planes[i].model->transform.position);
+					float dotProdB = glm::dot(dirB, _planes[i].model->transform.forward);
+					
+					if (mesh->GetName() == "Head" && i == 0) {
+						std::cout << std::endl;
+						std::cout << "name: " << mesh->GetName() << " dotProdA: " << dotProdA << std::endl;
+						std::cout << "name: " << mesh->GetName() << " dotProdB: " << dotProdB << std::endl;
+						std::cout << std::endl;
+					}
+
+					if (dotProdA < 0.0f && dotProdB < 0.0f) {
+						std::cout << "mesh : " << mesh->GetName() << " dont pass check!" << std::endl;
+						checkPassed = false;
+						break;
+					}
+				}
+
+				if (!checkPassed) {
+					mesh->SetCanDrawMesh(false);
+					mesh->StopDrawMeshAndSons(mesh);
+					return;
+				}
+			}
 
 			for (int i = 0; i < _planes.size(); i++) {
 				glm::vec3 dirA = glm::normalize(mesh->GetMinColl() - _planes[i].model->transform.position);
@@ -71,16 +68,16 @@ namespace Coco {
 				mesh->SetCanDrawMesh(true);
 		}
 
-		for (int i = 0; i < mesh->GetMeshesSons().size(); i++) 
-			CheckObjectBSP(mesh->GetMeshesSons()[i],false);
-		
+		for (int i = 0; i < mesh->GetMeshesSons().size(); i++)
+			CheckObjectBSP(mesh->GetMeshesSons()[i], false);
+
 	}
 
 	void BSPlane::CheckPlaneCamera(Camera* camera) {
 		for (int i = 0; i < _planes.size(); i++) {
 			glm::vec3 dirFromAtoB = glm::normalize(camera->transform.position - _planes[i].model->transform.position);
 			float dotProd = glm::dot(dirFromAtoB, _planes[i].model->transform.forward);
-		
+
 			if (dotProd < 0) {
 				glm::vec3 rot;
 				if (_planes[i].model->transform.rotation == _planes[i].angleLookA)
@@ -90,7 +87,7 @@ namespace Coco {
 
 				_planes[i].model->SetRotations(rot);
 			}
-		}	
+		}
 	}
 
 	void BSPlane::AddModelToCheck(Model* object) {
