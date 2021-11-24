@@ -97,13 +97,13 @@ namespace Coco {
 		_model2->SetMeshPos(0, -0.225, 0, 3);
 		_model2->SetMeshScale(1.5, 0.75, 1.5, 3);
 
-		_model2->SetMeshPos(-0.05, -0.2, 0, 4);
+		_model2->SetMeshPos(0.05, -0.2, 0, 4);
 		_model2->SetMeshScale(0.33, 1, 0.33, 4);
 
 		_model2->SetMeshPos(0, -0.15, -0.05, 5);
 		_model2->SetMeshScale(0.9, 0.6, 3, 5);
 
-		_model2->SetMeshPos(0.05, -0.2, 0, 6);
+		_model2->SetMeshPos(-0.05, -0.2, 0, 6);
 		_model2->SetMeshScale(0.33, 1, 0.33, 6);
 
 		_model2->SetMeshPos(0, -0.15, -0.05, 7);
@@ -124,29 +124,6 @@ namespace Coco {
 		_model2->SetPos(0, 0, 2);
 	
 		_model2->GetMeshes()[0]->SetGeneralColls(_model2->GetMeshes()[0]);
-
-		//for (int i = 0; i < _model2->GetMeshes().size(); i++) 			{
-		//	std::cout << std::endl;
-		//	std::cout << "name: " << _model2->GetMeshes()[i]->GetName()<< " coll min pos: x: " << _model2->GetMeshes()[i]->GetMinColl().x << " y: " << _model2->GetMeshes()[i]->GetMinColl().y << " z: " << _model2->GetMeshes()[i]->GetMinColl().z << std::endl;
-		//	std::cout << "name: " << _model2->GetMeshes()[i]->GetName()<< " coll max pos: x: " << _model2->GetMeshes()[i]->GetMaxColl().x << " y: " << _model2->GetMeshes()[i]->GetMaxColl().y << " z: " << _model2->GetMeshes()[i]->GetMaxColl().z << std::endl;
-		//	std::cout << std::endl;
-		//	
-		//	std::cout << std::endl;
-		//	std::cout << "name: " << _model2->GetMeshes()[i]->GetName() << " coll gen min pos: x: " << _model2->GetMeshes()[i]->GetMinCollGeneral().x << " y: " << _model2->GetMeshes()[i]->GetMinCollGeneral().y << " z: " << _model2->GetMeshes()[i]->GetMinCollGeneral().z << std::endl;
-		//	std::cout << "name: " << _model2->GetMeshes()[i]->GetName() << " coll gen max pos: x: " << _model2->GetMeshes()[i]->GetMaxCollGeneral().x << " y: " << _model2->GetMeshes()[i]->GetMaxCollGeneral().y << " z: " << _model2->GetMeshes()[i]->GetMaxCollGeneral().z << std::endl;
-		//	std::cout << std::endl;
-		//}
-		
-		//std::cout << std::endl;
-		//std::cout << "manito coll min pos: x: " << _model2->GetMeshes()[9]->GetMinColl().x << " y: " << _model2->GetMeshes()[9]->GetMinColl().y << " z: " << _model2->GetMeshes()[9]->GetMinColl().z << std::endl;
-		//std::cout << "manito coll max pos: x: " << _model2->GetMeshes()[9]->GetMaxColl().x << " y: " << _model2->GetMeshes()[9]->GetMaxColl().y << " z: " << _model2->GetMeshes()[9]->GetMaxColl().z << std::endl;
-		//std::cout << std::endl;
-		//
-		//std::cout << std::endl;
-		//std::cout << "manito coll gen min pos: x: " << _model2->GetMeshes()[9]->GetMinCollGeneral().x << " y: " << _model2->GetMeshes()[9]->GetMinCollGeneral().y << " z: " << _model2->GetMeshes()[9]->GetMinCollGeneral().z << std::endl;
-		//std::cout << "manito coll gen max pos: x: " << _model2->GetMeshes()[9]->GetMaxCollGeneral().x << " y: " << _model2->GetMeshes()[9]->GetMaxCollGeneral().y << " z: " << _model2->GetMeshes()[9]->GetMaxCollGeneral().z << std::endl;
-		//std::cout << std::endl;
-
 
 #pragma endregion
 
@@ -260,36 +237,8 @@ namespace Coco {
 		else if (Input::GetKey(Keycode::X))
 			posXCube -= deltaTime * speedPosModel;
 
-
-
 		_model1->SetPos(posXCube, 0, 2);
 
-		//timerToPrint += deltaTime;
-		//if (timerToPrint >= 0.1) {
-		//	//system("cls");
-		//
-		//	//for (int i = 0; i < _model2->GetMeshes().size(); i++) {
-		//	//	std::cout << std::endl;
-		//	//	std::cout << "name: " << _model2->GetMeshes()[i]->GetName()<<" coll min pos: x: " << _model2->GetMeshes()[i]->GetMinColl().x << " y: " << _model2->GetMeshes()[i]->GetMinColl().y << " z: " << _model2->GetMeshes()[i]->GetMinColl().z << std::endl;
-		//	//	std::cout << "name: " << _model2->GetMeshes()[i]->GetName()<<" coll max pos: x: " << _model2->GetMeshes()[i]->GetMaxColl().x << " y: " << _model2->GetMeshes()[i]->GetMaxColl().y << " z: " << _model2->GetMeshes()[i]->GetMaxColl().z << std::endl;
-		//	//	std::cout << std::endl;
-		//	//}
-		//
-		//	//_model2->GetMeshes()[0]->SetGeneralColls(_model2->GetMeshes()[0]);
-		//	timerToPrint = 0;
-		//	BSP->CheckPlaneCamera(_camera);
-		//	BSP->BSPMagic();
-		//}
-
-		//std::cout << std::endl;
-		//std::cout << "manito coll min pos: x: " << _model2->GetMeshes()[9]->GetMinColl().x << " y: " << _model2->GetMeshes()[9]->GetMinColl().y << " z: " << _model2->GetMeshes()[9]->GetMinColl().z << std::endl;
-		//std::cout << "manito coll max pos: x: " << _model2->GetMeshes()[9]->GetMaxColl().x << " y: " << _model2->GetMeshes()[9]->GetMaxColl().y << " z: " << _model2->GetMeshes()[9]->GetMaxColl().z << std::endl;
-		//std::cout << std::endl;
-		//
-		//std::cout << std::endl;
-		//std::cout << "manito coll gen min pos: x: " << _model2->GetMeshes()[9]->GetMinCollGeneral().x << " y: " << _model2->GetMeshes()[9]->GetMinCollGeneral().y << " z: " << _model2->GetMeshes()[9]->GetMinCollGeneral().z << std::endl;
-		//std::cout << "manito coll gen max pos: x: " << _model2->GetMeshes()[9]->GetMaxCollGeneral().x << " y: " << _model2->GetMeshes()[9]->GetMaxCollGeneral().y << " z: " << _model2->GetMeshes()[9]->GetMaxCollGeneral().z << std::endl;
-		//std::cout << std::endl;
 		timerToPrint += deltaTime;
 		if (timerToPrint >= 0.2f) {
 			timerToPrint = 0;
