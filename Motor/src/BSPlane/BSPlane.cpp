@@ -21,7 +21,7 @@ namespace Coco {
 		if (!isRoot) {
 			bool checkPassed = true;
 			if (mesh->GetIsParent()) {
-				if (mesh->GetName() != "Head") {
+				//if (mesh->GetName() != "Head") {
 					for (int i = 0; i < _planes.size(); i++) {
 						glm::vec3 dirA = glm::normalize(mesh->GetMinCollGeneral() - _planes[i].model->transform.position);
 						float dotProdA = glm::dot(dirA, _planes[i].model->transform.forward);
@@ -29,12 +29,12 @@ namespace Coco {
 						glm::vec3 dirB = glm::normalize(mesh->GetMaxCollGeneral() - _planes[i].model->transform.position);
 						float dotProdB = glm::dot(dirB, _planes[i].model->transform.forward);
 
-						if (mesh->GetName() == "Body" && i == 0) {
-							std::cout << std::endl;
-							std::cout << "name: " << mesh->GetName() << " dotProdA: " << dotProdA << std::endl;
-							std::cout << "name: " << mesh->GetName() << " dotProdB: " << dotProdB << std::endl;
-							std::cout << std::endl;
-						}
+						//if (i == 0) {
+						//	std::cout << std::endl;
+						//	std::cout << "name: " << mesh->GetName() << " dotProdA: " << dotProdA << std::endl;
+						//	std::cout << "name: " << mesh->GetName() << " dotProdB: " << dotProdB << std::endl;
+						//	std::cout << std::endl;
+						//}
 
 						if (dotProdA < 0.0f && dotProdB < 0.0f) {
 							std::cout << "mesh : " << mesh->GetName() << " dont pass check!" << std::endl;
@@ -48,7 +48,7 @@ namespace Coco {
 						mesh->StopDrawMeshAndSons(mesh);
 						return;
 					}
-				}
+				//}
 			}
 
 			for (int i = 0; i < _planes.size(); i++) {

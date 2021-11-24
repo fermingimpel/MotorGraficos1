@@ -378,8 +378,12 @@ namespace Coco {
 		for (int i = 0; i < mesh->GetMeshesSons().size(); i++)
 			SetGeneralColls(mesh->GetMeshesSons()[i]);
 
-		if (mesh->GetParent() != NULL)
-			mesh->TryChangeParentGeneralColls(mesh->GetParent());
+		if (mesh->GetParent() != NULL) {
+			if (!mesh->GetIsParent())
+				mesh->TryChangeParentGeneralColls(mesh->GetParent());
+			else
+				mesh->TryChangeParentGeneralCollsWhenYouAreParent(mesh->GetParent());
+		}
 	}
 
 	void Mesh::TryChangeParentGeneralColls(Mesh* mesh) {
@@ -409,5 +413,30 @@ namespace Coco {
 		mesh->SetMinCollGeneral(glm::vec3(minX, minY, minZ));
 		mesh->SetMaxCollGeneral(glm::vec3(maxX, maxY, maxZ));
 	}
+	void Mesh::TryChangeParentGeneralCollsWhenYouAreParent(Mesh* mesh) {
+		float minX = mesh->GetMinCollGeneral().x, minY = mesh->GetMinCollGeneral().y, minZ = mesh->GetMinCollGeneral().z, maxX = mesh->GetMaxCollGeneral().x, maxY = mesh->GetMaxCollGeneral().y, maxZ = mesh->GetMaxCollGeneral().z;
 
+		for (int i = 0; i < mesh->GetMeshesSons().size(); i++) {
+			if (mesh->GetMeshesSons()[i]->GetMinCollGeneral().x <= minX)
+				minX = mesh->GetMeshesSons()[i]->GetMinCollGeneral().x;
+
+			if (mesh->GetMeshesSons()[i]->GetMinCollGeneral().y <= minY)
+				minY = mesh->GetMeshesSons()[i]->GetMinCollGeneral().y;
+
+			if (mesh->GetMeshesSons()[i]->GetMinCollGeneral().z <= minZ)
+				minZ = mesh->GetMeshesSons()[i]->GetMinCollGeneral().z;
+
+			if (mesh->GetMeshesSons()[i]->GetMaxCollGeneral().x >= maxX)
+				maxX = mesh->GetMeshesSons()[i]->GetMaxCollGeneral().x;
+
+			if (mesh->GetMeshesSons()[i]->GetMaxCollGeneral().y >= maxY)
+				maxY = mesh->GetMeshesSons()[i]->GetMaxCollGeneral().y;
+
+			if (mesh->GetMeshesSons()[i]->GetMaxCollGeneral().z >= maxZ)
+				maxZ = mesh->GetMeshesSons()[i]->GetMaxCollGeneral().z;
+		}
+
+		mesh->SetMinCollGeneral(glm::vec3(minX, minY, minZ));
+		mesh->SetMaxCollGeneral(glm::vec3(maxX, maxY, maxZ));
+	}
 }

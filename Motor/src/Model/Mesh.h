@@ -78,6 +78,7 @@ namespace Coco {
 		void StopDrawMeshAndSons(Mesh* mesh);
 		void SetGeneralColls(Mesh* mesh);
 		void TryChangeParentGeneralColls(Mesh* mesh);
+		void TryChangeParentGeneralCollsWhenYouAreParent(Mesh* mesh);
 	};
 
 }
