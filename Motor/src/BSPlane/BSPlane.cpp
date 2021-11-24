@@ -19,8 +19,10 @@ namespace Coco {
 
 	void BSPlane::CheckObjectBSP(Mesh* mesh, bool isRoot) {
 		if (!isRoot) {
+
 			bool checkPassed = true;
 			std::cout << std::endl;
+
 			if (mesh->GetIsParent()) {
 				for (int i = 0; i < _planes.size(); i++) {
 					glm::vec3 dirA = glm::normalize(mesh->GetMinCollGeneral() - _planes[i].model->transform.position);
@@ -70,10 +72,8 @@ namespace Coco {
 			}
 		}
 
-
 		for (int i = 0; i < mesh->GetMeshesSons().size(); i++)
 			CheckObjectBSP(mesh->GetMeshesSons()[i], false);
-
 	}
 
 	void BSPlane::CheckPlaneCamera(Camera* camera) {

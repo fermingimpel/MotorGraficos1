@@ -241,8 +241,8 @@ namespace Coco {
 
 		timerToPrint += deltaTime;
 		if (timerToPrint >= 0.2f) {
-			timerToPrint = 0;
 			system("cls");
+			timerToPrint = 0;
 			_model2->GetMeshes()[0]->SetGeneralColls(_model2->GetMeshes()[0]);
 			BSP->CheckPlaneCamera(_camera);
 			BSP->BSPMagic();

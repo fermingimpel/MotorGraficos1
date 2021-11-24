@@ -325,6 +325,13 @@ namespace Coco {
 		return _meshSons;
 	}
 
+	void Mesh::StopDrawMeshAndSons(Mesh* mesh) {
+		mesh->SetCanDrawMesh(false);
+		if(mesh->GetIsParent())
+			for (int i = 0; i < mesh->GetMeshesSons().size();i++) 
+				StopDrawMeshAndSons(mesh->GetMeshesSons()[i]);
+	}
+
 	void Mesh::SetMinColl(glm::vec3 value) {
 		_minCollConst = value;
 		_minColl = (_minCollConst * transform.scale) + transform.position;
@@ -361,13 +368,6 @@ namespace Coco {
 	}
 	glm::vec3 Mesh::GetMaxCollGeneral() {
 		return _maxCollTotal;
-	}
-
-	void Mesh::StopDrawMeshAndSons(Mesh* mesh) {
-		mesh->SetCanDrawMesh(false);
-		if(mesh->GetIsParent())
-			for (int i = 0; i < mesh->GetMeshesSons().size();i++) 
-				StopDrawMeshAndSons(mesh->GetMeshesSons()[i]);
 	}
 
 	void Mesh::SetGeneralColls(Mesh* mesh) {
