@@ -49,6 +49,7 @@ namespace Coco {
 			else
 				std::cout << "mesh : " << mesh->GetName() << " has 0 sons, dont make general check!" << std::endl;
 
+
 			for (int i = 0; i < _planes.size(); i++) {
 				glm::vec3 dirA = glm::normalize(mesh->GetMinColl() - _planes[i].model->transform.position);
 				float dotProdA = glm::dot(dirA, _planes[i].model->transform.forward);

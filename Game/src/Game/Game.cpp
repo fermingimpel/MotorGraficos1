@@ -180,6 +180,7 @@ namespace Coco {
 		GetWindow()->ClearWindow(0.15f, 0.15f, 0.15f, 1.0f);
 
 		rotY += deltaTime * 50.0f;
+		_model1->SetRotations(180, rotY, 0);
 
 		if (Input::GetKey(Keycode::W))
 			_camera->SetPos(_camera->transform.position + (glm::vec3(0, 1, 0) * speed * deltaTime));
